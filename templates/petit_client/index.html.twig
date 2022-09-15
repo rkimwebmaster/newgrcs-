@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PetitClient index
+{% endblock %}
+{% block lesboutons %}
+	{% if is_granted('ROLE_ADMIN') %}
+		<a type="button" title="Ajouter nouveau " href="{{path('app_petit_client_new')}}" class="btn btn-sm btn-info">
+			<i class="fas fa-plus-circle"></i>
+			Nouveau
+		</a>
+	{% endif %}
+{% endblock %}
+{% block ariane %}
+	{{parent() }}
+	Petit client
+{% endblock %}
+{% block body %}
+	<table id="example1" class="table table-striped table-hover ">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Client</th>
+				<th>Téléphone</th>
+				<th>Comptes activés</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th>#</th>
+				<th>Client</th>
+				<th>Téléphone</th>
+				<th>Comptes activés</th>
+				<th>actions</th>
+			</tr>
+		</tfoot>
+		<tbody>
+			{% for petit_client in petit_clients %}
+				<tr>
+					<td>{{ loop.index }}</td>
+					<td>{{ petit_client }}
+						-
+						{{ petit_client.isParticulier ? "<span title='particulier'  class='badge badge-danger'>P</span>" : "<span title='Entreprise' class='badge badge-danger'>E</span>"  }}
+						<span title="Nombres de comptes" class="badge badge-info">{{ petit_client.comptePetitClients|length }}</span>
+					</td>
+					<td>
+						<a title="Appeller" href="tel:{{petit_client.adresse.telephone}}">
+							<span class="fa fa-phone"></span>
+						</a>
+						{{petit_client.adresse.telephone}}
+					</td>
+					<td>
+						{% for compte in petit_client.comptePetitClients %}
+							<a class="dropdown-item" href="{{path('app_compte_petit_client_new',{'id': petit_client.id, 'idCompte': compte.id })}}">{{loop.index}}
+								-
+								{{compte}}</a>
+						{% endfor %}
+					</td>
+					<td>
+						<div class="btn-group">
+							<a class="btn btn-default btn-sm" href="{{ path('app_petit_client_show', {'id': petit_client.id}) }}"><span class="fa fa-search-plus"/></a>
+							{% if is_granted('ROLE_ADMIN') %}
+							<a class="btn btn-default btn-sm" href="{{ path('app_petit_client_edit', {'id': petit_client.id}) }}"><span class="fa fa-edit"/></a>
+							{% endif %}
+							{# <a href="{{ path('app_compte_petit_client_new', {'id': petit_client.id}) }}">Créer nvx compte</a> #}
+						</div>
+						{% if not is_granted('ROLE_ADMIN') %}
+							{% if comptes_grcs is defined  %}
+								<div class="btn-group">
+									<button type="button" class="btn btn-sm btn-default btn-flat">Créer compte</button>
+									<button type="button" class="btn btn-sm btn-default btn-flat dropdown-toggle dropdown-icon" data-toggle="dropdown">
+										<span class="sr-only">Toggle Dropdown</span>
+									</button>
+									<div class="dropdown-menu" role="menu">
+										{% for compte in comptes_grcs %}
+											<a class="dropdown-item" href="{{path('app_compte_petit_client_new',{'id': petit_client.id, 'idCompte': compte.id })}}">{{compte}}</a>
+										{% endfor %}
+									</div>
+								</div>
+							{% else %}
+								<span class"text-danger">
+									No GRCS compte
+								</span>
+							{% endif %}
+						{% endif %}
+
+
+						{% if petit_client.comptePetitClients|length > 0 and is_granted('ROLE_ADMIN_GRCS') %}
+							<div class="btn-group">
+								<button type="button" class="btn btn-default btn-flat btn-sm">Appro. un compte</button>
+								<button type="button" class="btn btn-default btn-flat btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<div class="dropdown-menu" role="menu">
+									{% for compte in petit_client.comptePetitClients %}
+										<a class="dropdown-item" href="{{path('app_approvisionnement_petit_client_new',{'id': compte.id })}}">{{compte}}</a>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif  %}
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5" class="text-warning">aucun enregistrement dans le système.</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

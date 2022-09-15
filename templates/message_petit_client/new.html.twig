@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau  MessagePetitClient{% endblock %}
+{% block ariane %}
+{{parent() }} Message Petit client 
+{% endblock %}
+{% block lesboutons %}
+	<a type="button" title="Liste  message "  href="{{path('app_message_petit_client_index')}}"class="btn btn-sm btn-info">
+		<i class="fas fa-reply-all"></i>
+		Liste 
+	</a>
+{% endblock %}
+{% block body %}
+    {{ include('message_petit_client/_form.html.twig') }}
+
+    {# <a href="{{ path('app_message_petit_client_index') }}">retour à la liste</a> #}
+{% endblock %}

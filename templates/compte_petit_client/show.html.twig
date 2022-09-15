@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Compte Petit Client
+{% endblock %}
+{% block ariane %}
+	{{parent() }}
+	Compte client
+{% endblock %}
+{% block lesboutons %}
+	{% if not is_granted('ROLE_ADMIN_PT_CL') %}
+	<a type="button" title="Liste  " href="{{path('app_compte_petit_client_index')}}" class="btn btn-sm btn-info">
+		<i class="fas fa-plus-circle"></i>
+		Liste
+	</a>
+    {% endif %}
+	{% if is_granted('ROLE_ADMIN_GD_FSS') %}
+        <a title="Modifier nouveau " href="{{path('app_compte_petit_client_edit', {id: compte_petit_client.id })}}" class="btn btn-sm btn-info">
+			<i class="fas fa-edit"></i>
+			Modifier 
+		</a>
+	{% endif %}
+{% endblock %}
+{% block body %}
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Quantite Diesel</th>
+				<td>{{ compte_petit_client.quantiteDiesel }}</td>
+			</tr>
+			<tr>
+				<th>Quantite Essence</th>
+				<td>{{ compte_petit_client.quantiteEssence }}</td>
+			</tr>
+			<tr>
+				<th>Date Dernier Approvisionnement</th>
+				<td>{{ compte_petit_client.dateDernierApprovisionnement ? compte_petit_client.dateDernierApprovisionnement|format_datetime('long') : '' }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	{# <a href="{{ path('app_compte_petit_client_index') }}">retour à la liste</a>
+
+	<a href="{{ path('app_compte_petit_client_edit', {'id': compte_petit_client.id}) }}"><span class="fa fa-edit"/></a> #}
+
+	{# {{ include('compte_petit_client/_delete_form.html.twig') }} #}
+{% endblock %}

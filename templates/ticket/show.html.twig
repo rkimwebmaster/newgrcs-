@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ticket{% endblock %}
+{% block ariane %}
+{{parent() }} Ticket 
+{% endblock %}
+{% block body %}
+    <table id="example1" class="table table-striped table-hover ">
+        <tbody>
+            <tr>
+                <th>Date</th>
+                <td>{{ ticket.date ? ticket.date|format_datetime('long') : '' }}</td>
+            </tr>
+            <tr>
+                <th>NomChauffeur</th>
+                <td>{{ ticket.nomChauffeur }}</td>
+            </tr>
+            <tr>
+                <th>NumeroPlaqueImmatriculation</th>
+                <td>{{ ticket.numeroPlaqueImmatriculation }}</td>
+            </tr>
+            <tr>
+                <th>IsGroupeElectrogene</th>
+                <td>{{ ticket.isGroupeElectrogene ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>DateRetrait</th>
+                <td>{{ ticket.dateRetrait ? ticket.dateRetrait|format_datetime('long') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Quantite</th>
+                <td>{{ ticket.quantite }}</td>
+            </tr>
+            <tr>
+                <th>IsCredit</th>
+                <td>{{ ticket.isCredit ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>TotalMontant</th>
+                <td>{{ ticket.totalMontant }}</td>
+            </tr>
+            <tr>
+                <th>IsServi</th>
+                <td>{{ ticket.isServi ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ticket_index') }}">retour à la liste</a>
+
+    <a href="{{ path('app_ticket_edit', {'id': ticket.id}) }}"><span class="fa fa-edit" /></a>
+
+    {{ include('ticket/_delete_form.html.twig') }}
+{% endblock %}

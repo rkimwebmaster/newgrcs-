@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau  PetitClient
+{% endblock %}
+{% block ariane %}
+	{{parent() }}
+	Petit client
+{% endblock %}
+{% block lesboutons %}
+
+	<a href="{{ path('app_petit_client_index') }}" title="Retour à la liste " class="btn btn-info btn-sm">
+		<i class="fa fa-reply-all"></i>
+		Rétour
+	</a>
+{% endblock %}
+{% block body %}
+	{{ include('petit_client/_form.html.twig') }}
+
+	{# <a href="{{ path('app_petit_client_index') }}">retour à la liste</a> #}
+{% endblock %}

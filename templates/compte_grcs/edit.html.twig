@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier  CompteGRCS{% endblock %}
+{% block ariane %}
+{{parent() }} Comptes GRCS
+{% endblock %}
+{% block body %}
+    {{ include('compte_grcs/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    {# <a href="{{ path('app_compte_g_r_c_s_index') }}">retour à la liste</a> #}
+
+    {# {{ include('compte_grcs/_delete_form.html.twig') }} #}
+{% endblock %}

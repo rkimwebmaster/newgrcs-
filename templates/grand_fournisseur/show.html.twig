@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GrandFournisseur
+{% endblock %}
+{% block ariane %}
+	{{parent() }}
+	Grand fournisseur
+{% endblock %}
+{% block lesboutons %}
+	<a href="{{path('app_grand_fournisseur_index')}}" title="Retour à la liste " class="btn btn-info btn-sm">
+		<i class="fa fa-reply-all"></i>
+		Rétour
+	</a>
+	<a href="{{path('app_grand_fournisseur_index')}}" title="Retour à la liste " class="btn btn-info btn-sm">
+		<i class="fa fa-reply-all"></i>
+		Approvisionner
+	</a>
+	<a href="{{path('app_grand_fournisseur_edit',{'id': grand_fournisseur.id })}}" title="Modifier élément  " class="btn btn-sm btn-info">
+		<i class="fas fa-edit"></i>
+		Modifier
+	</a>
+	<a href="{{path('app_grand_fournisseur_delete',{'id': grand_fournisseur.id })}}" title="Supprimer élément" class="btn btn-sm btn-info">
+		<i class="fas fa-trash"></i>
+		Supprimer
+	</a>
+{% endblock %}
+
+{% block body %}
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Entreprise
+				</th>
+				<td>{{ grand_fournisseur.entreprise|upper }}</td>
+			</tr>
+			<tr>
+				<th>Adresse</th>
+				<td>{{ grand_fournisseur.adresse.adresse }},
+					{{ grand_fournisseur.adresse }}</td>
+			</tr>
+			<tr>
+				<th>Noms Representant</th>
+				<td>{{ grand_fournisseur.identite|upper }}</td>
+			</tr>
+			<tr>
+				<th>Compte GRCS</th>
+				<td>
+					{{ grand_fournisseur.compteGRCS}}
+					<span class="badge badge-warning">{{' '~ grand_fournisseur.compteGRCS.quantiteDiesel  ~' L diesel '}}</span>
+					<span class="badge badge-success">{{ grand_fournisseur.compteGRCS.quantiteEssence ~' L essence' }}
+					</span>
+					{% if is_granted('ROLE_ADMIN_GD_FSS') %}
+						<a href="{{path('app_approvisionnement_g_r_c_s_new',{'id': app.user.grandFournisseur.id})}}" class="btn btn-default ">Appro. compte
+							{{app.user.grandFournisseur}}</a>
+					{% else %}
+						<span class"text-danger">
+							No Comptes GRCS
+						</span>
+					{% endif %}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	{# 
+		<a href="{{ path('app_grand_fournisseur_index') }}">Approvisonner GRCS
+		</a>
+		<a href="{{ path('app_grand_fournisseur_index') }}">retour à la liste</a>
+	
+		<a href="{{ path('app_grand_fournisseur_edit', {'id': grand_fournisseur.id}) }}"><span class="fa fa-edit"/></a> #}
+
+	{# {{ include('grand_fournisseur/_delete_form.html.twig') }} #}
+{% endblock %}

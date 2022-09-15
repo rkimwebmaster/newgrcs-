@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ApprovisionnementGRCS{% endblock %}
+{% block ariane %}
+{{parent() }} Appro.
+{% endblock %}
+{% block body %}
+    <table class="table table-hover table-striped ">
+        <tbody>
+            <tr>
+                <th>Date</th>
+                <td>{{ approvisionnement_g_r_c.date ? approvisionnement_g_r_c.date|format_datetime('long') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Quantite diesel </th>
+                <td>{{ approvisionnement_g_r_c.quantiteDiesel }} Litre (s) </td>
+            </tr>
+            <tr>
+                <th>Quantite essence  </th>
+                <td>{{ approvisionnement_g_r_c.quantiteEssence }} Litre (s) </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

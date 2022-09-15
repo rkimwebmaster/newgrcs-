@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau  CompteGRCS{% endblock %}
+{% block ariane %}{{parent() }} Comptes GRCS{% endblock %}
+
+{% block body %}
+    {{ include('compte_grcs/_form.html.twig') }}
+
+    {# <a href="{{ path('app_compte_g_r_c_s_index') }}">retour à la liste</a> #}
+{% endblock %}

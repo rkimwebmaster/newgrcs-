@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau  GrandFournisseur{% endblock %}
+{% block ariane %}
+{{parent() }} Grand fournisseur
+{% endblock %}
+{% block lesboutons %}
+	<a href="{{path('app_grand_fournisseur_index')}}" title="Retour à la liste " class="btn btn-default btn-sm">
+		<i class="fa fa-reply-all"></i>
+		Rétour
+	</a>
+{% endblock %}
+
+{% block body %}
+    {{ include('grand_fournisseur/_form.html.twig') }}
+
+    
+{% endblock %}

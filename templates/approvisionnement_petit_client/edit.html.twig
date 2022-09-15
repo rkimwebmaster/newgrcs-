@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier  ApprovisionnementPetitClient{% endblock %}
+{% block ariane %}
+{{parent() }} Approvisionnement 
+{% endblock %}
+{% block body %}
+    {{ include('approvisionnement_petit_client/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <a href="{{ path('app_approvisionnement_petit_client_index') }}">retour à la liste</a>
+
+    {{ include('approvisionnement_petit_client/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau  User{% endblock %}
+{% block ariane %}
+{{parent() }} Utilisateurs 
+{% endblock %}
+{% block body %}
+
+    {{ include('user/_form.html.twig') }}
+
+    <a href="{{ path('app_user_index') }}">retour à la liste</a>
+{% endblock %}

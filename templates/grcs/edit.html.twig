@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier  GRCS{% endblock %}
+{% block ariane %}
+{{parent() }} GRCS
+{% endblock %}
+{% block lesboutons %}
+	<a href="{{path('app_g_r_c_s_show',{id: g_r_c.id })}}" title="Voir élément  " class="btn btn-sm btn-info">
+		<i class="fas fa-reply-all"></i>
+		retour 
+	</a>
+{% endblock %}
+{% block body %}
+
+    {{ include('grcs/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    {# <a href="{{ path('app_g_r_c_s_index') }}">retour à la liste</a> #}
+
+    {# {{ include('grcs/_delete_form.html.twig') }} #}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ActivationPostPayeGRCS{% endblock %}
+{% block ariane %}
+	GRCS
+	<span class="fa fa-angle-double-right"></span>
+	Mode PostPayé
+{% endblock %}
+{% block body %}
+    {# <h1>Edit ActivationPostPayeGRCS</h1> #}
+
+    {{ include('activation_post_paye_grcs/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    {# <a href="{{ path('app_activation_post_paye_g_r_c_s_index') }}">back to list</a> #}
+
+    {# {{ include('activation_post_paye_grcs/_delete_form.html.twig') }} #}
+{% endblock %}

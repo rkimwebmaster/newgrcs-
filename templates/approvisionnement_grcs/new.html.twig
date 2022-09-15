@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau  ApprovisionnementGRCS{% endblock %}
+{% block ariane %}
+{{parent() }} Approvisionnement
+{% endblock %}
+{% block lesboutons %}
+	<a href="{{ path('app_approvisionnement_g_r_c_s_index') }}" title="Retour à la liste " class="btn btn-info btn-sm">
+		<i class="fa fa-reply-all"></i>
+		Rétour
+	</a>
+	<a href="{{path('app_compte_petit_client_index') }}" title="Ajouter nouveau " class="btn btn-sm btn-info">
+		<i class="fas fa-plus-circle"></i>
+		Nouveau
+	</a>
+{% endblock %}
+ 
+{% block body %}
+<h3 class="text-uppercase">Compte :
+		{{approvisionnement_g_r_c.compteGRCS|upper }}
+	</h3>
+	<div class="row">
+		<div class="col-sm-6 col-6">
+			<address>
+				Entreprise :
+				<strong>{{approvisionnement_g_r_c.compteGRCS.grcs.entreprise|upper }}
+				</strong>
+				<br>
+				Solde :
+				<span class="badge badge-info">{{approvisionnement_g_r_c.compteGRCS.quantiteDiesel}} L Diesel </span> - <span class="badge badge-success">{{approvisionnement_g_r_c.compteGRCS.quantiteEssence}} L Essence </span> 
+				<br>
+				Téléphone
+				<a href="tel:{{approvisionnement_g_r_c.compteGRCS.grcs.adresse.telephone}}">
+					<span class="fa fa-phone"></span>
+				</a>
+				: (+243)
+				{{approvisionnement_g_r_c.compteGRCS.grcs.adresse.telephone}}<br>
+				Email
+				<a href="mailto:{{approvisionnement_g_r_c.compteGRCS.grcs.adresse.email}}">
+					<span class="fa fa-envelope"></span>
+				</a>
+				:
+				{{approvisionnement_g_r_c.compteGRCS.grcs.adresse.email}}
+				<br>
+			</address>
+		</div>
+		<div class="col-sm-6 col-6">
+			<address class="float-right">
+            <i>
+			Date approvisionnement :
+			{{approvisionnement_g_r_c.date|date('d/M/Y')}}
+		</i>
+            </address>
+		</div>
+	</div>
+	
+    {{ include('approvisionnement_grcs/_form.html.twig') }}
+
+    {# <a>retour à la liste</a> #}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau  MessageGRCS{% endblock %}
+{% block ariane %}
+{{parent() }} Message GRCS
+{% endblock %}
+{% block lesboutons %}
+	<a title="Liste  "  href="{{ path('app_message_g_r_c_s_index') }}" class="btn btn-sm btn-info">
+		<i class="fas fa-reply-all"></i>
+		Liste 
+	</a>
+{% endblock %}
+{% block body %}
+    {{ include('message_grcs/_form.html.twig') }}
+
+    {# <a href="{{ path('app_message_g_r_c_s_index') }}">retour à la liste</a> #}
+{% endblock %}

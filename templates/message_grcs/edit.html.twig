@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier  MessageGRCS{% endblock %}
+{% block ariane %}
+{{parent() }} Message GRCS
+{% endblock %}
+{% block body %}
+    {{ include('message_grcs/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <a href="{{ path('app_message_g_r_c_s_index') }}">retour à la liste</a>
+
+    {{ include('message_grcs/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ApprovisionnementPetitClient{% endblock %}
+{% block ariane %}
+{{parent() }} Approvisionnement {% endblock %}
+{% block body %}
+    <table class="table table-hover table-striped ">
+        <tbody>
+            <tr>
+                <th>Date</th>
+                <td>{{ approvisionnement_petit_client.date ? approvisionnement_petit_client.date|format_datetime('long') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Quantite Diesel </th>
+                <td>{{ approvisionnement_petit_client.quantiteDiesel }} L Diesel </td>
+            </tr>
+            <tr>
+                <th>Quantite Essence </th>
+                <td>{{ approvisionnement_petit_client.quantiteEssence }} L Essence </td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ approvisionnement_petit_client.montant }}</td>
+            </tr>
+            <tr>
+                <th>Bordereau</th>
+                <td>
+                <span class="fa fa-book" /> 
+                {{ approvisionnement_petit_client.bordereau }}</td>
+            </tr>
+            <tr>
+                <th>Numero Bordereau</th>
+                <td>{{ approvisionnement_petit_client.numeroBordereau }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {# <a href="{{ path('app_approvisionnement_petit_client_index') }}">retour à la liste</a> #}
+
+    {# <a href="{{ path('app_approvisionnement_petit_client_edit', {'id': approvisionnement_petit_client.id}) }}"><span class="fa fa-edit" /></a> #}
+
+    {# {{ include('approvisionnement_petit_client/_delete_form.html.twig') }} #}
+{% endblock %}

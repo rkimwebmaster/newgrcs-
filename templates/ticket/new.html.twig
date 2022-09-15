@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau  Ticket{% endblock %}
+{% block ariane %}
+{{parent() }} Ticket 
+{% endblock %}
+{% block body %}
+<h3 class="text-uppercase">Compte :
+		{{ticket.comptePetitClient|upper }}
+	</h3>
+	<div class="row">
+		<div class="col-sm-6 col-6">
+			<address>
+				Entreprise :
+				<strong>{{ticket.comptePetitClient.petitClient.entreprise|upper }}
+				</strong>
+				<br>
+				Solde :
+				<span class="badge badge-info">{{ticket.comptePetitClient.quantiteDiesel}} L Diesel </span> - <span class="badge badge-success">{{ticket.comptePetitClient.quantiteEssence}} L Essence </span> 
+				<br>
+				Téléphone :
+				<a href="tel:{{ticket.comptePetitClient.petitClient.adresse.telephone}}">
+					<span class="fa fa-phone"></span>
+				</a>
+				: (+243)
+				{{ticket.comptePetitClient.petitClient.adresse.telephone}}<br>
+				Email 
+				<a href="mailto:{{ticket.comptePetitClient.petitClient.adresse.email}}">
+					<span class="fa fa-envelope"></span>
+				</a>
+				:
+				{{ticket.comptePetitClient.petitClient.adresse.email}}
+				<br>
+			</address>
+		</div>
+		<div class="col-sm-6 col-6">
+			<address class="float-right">
+            <i>
+			Date creation ticket :
+			{{ticket.date|date('d/M/Y')}}
+		</i>
+            </address>
+		</div>
+	</div>
+	
+    {{ include('ticket/_form.html.twig') }}
+
+    {# <a href="{{ path('app_ticket_index') }}">retour à la liste</a> #}
+{% endblock %}

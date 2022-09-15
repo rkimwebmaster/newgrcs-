@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GRCS
+{% endblock %}
+{% block ariane %}
+	{{parent() }}
+	GRCS
+{% endblock %}
+{% block lesboutons %}
+	{% if is_granted('ROLE_ADMIN') %}
+		<a href="{{path('app_g_r_c_s_edit',{id: g_r_c.id })}}" title="Modifier élément  " class="btn btn-sm btn-info">
+			<i class="fas fa-edit"></i>
+			Modifier
+		</a>
+	{% endif %}
+	{% if is_granted('ROLE_ADMIN_GRCS') %}
+		<a href="{{path('app_g_r_c_s_carburant',{id: g_r_c.id })}}" title="Modifier prix carburant   " class="btn btn-sm btn-warning">
+			<i class="fas fa-edit"></i>
+			Prix Carburant & Qté de service 
+		</a>
+	{% endif %}
+
+{% endblock %}
+{% block body %}
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Entreprise
+				</th>
+				<td>{{ g_r_c.entreprise|upper }}</td>
+			</tr>
+			<tr>
+				<th>Adresse</th>
+				<td>{{ g_r_c.adresse.adresse }},
+					{{ g_r_c.adresse }}</td>
+			</tr>
+			<tr>
+				<th>Noms Representant
+				</th>
+				<td>{{ g_r_c.identite|upper }}</td>
+			</tr>
+			{% if is_granted('ROLE_ADMIN_GD_FSS') %}
+				<tr>
+					<th>Solde compte
+					</th>
+					<td>
+						{% for compte in g_r_c.compteGRCS %}
+							{% if not compte.isPostPaye %}
+								<a class="btn btn-default btn-sm" href="{{ path('app_activation_post_paye_g_r_c_s_new', {'id': compte.id}) }}"><span class="fa fa-star"/>postPayer</a>
+							{% else %}
+								<a class="btn btn-default btn-sm" href="{{ path('app_compte_g_r_c_s_desactiver_pp', {'id': compte.id}) }}"><span class="fa fa-star"/>desactiver postpayé
+								</a>
+							{% endif %}
+
+							{% if compte.grandFournisseur == app.user.grandFournisseur %}
+								{{compte}}
+								<div class="badge badge-warning">{{compte.quantiteDiesel}}
+									L Diesel
+								</div>
+								<div class="badge badge-success">{{compte.quantiteEssence}}
+									L Essence
+								</div>
+							{% endif %}
+
+
+						{% endfor %}
+					</td>
+				</tr>
+			{% endif %}
+			{% if is_granted('ROLE_ADMIN_GRCS')  %}
+				<tr>
+					<th>Solde fuel
+					</th>
+					<td>
+						{% for compte in g_r_c.compteGRCS %}
+							{{compte}}
+							<div class="badge badge-warning">{{compte.quantiteDiesel}}
+								L Diesel
+							</div>
+							<div class="badge badge-success">{{compte.quantiteEssence}}
+								L Essence
+							</div>
+						{% endfor %}
+					</td>
+				</tr>
+			{% endif %}
+			{% if not is_granted('ROLE_ADMIN_GD_FSS')  %}
+				<tr>
+					<th>Prix diesel
+					</th>
+					<td>
+						<div class="badge badge-default">{{ g_r_c.monnaie }}
+							{{ g_r_c.prixDiesel }}
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>Prix essence</th>
+					<td>
+						<div class="badge badge-default">{{ g_r_c.monnaie }}
+							{{ g_r_c.prixEssence }}
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>Qté stock recommandée diesel</th>
+					<td>
+						<div class="badge badge-default">
+							{{ g_r_c.qteStockRecommandeDiesel ? g_r_c.qteStockRecommandeDiesel : 'Non configuré' }} L
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>Qté stock recommandée essence</th>
+					<td>
+						<div class="badge badge-default">
+							{{ g_r_c.qteStockRecommandeEssence ? g_r_c.qteStockRecommandeEssence : 'Non configuré' }} L
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>Envoyer message à GRCS
+					</th>
+					<td>
+						<span class="fa fa-envelope">
+							<a href="{{path('app_message_g_r_c_s_new')}}">
+								{{ g_r_c.adresse.email|upper }}</a>
+						</td>
+					</td>
+				</tr>
+			{% endif %}
+			{% if not is_granted('ROLE_ADMIN_PT_CL') %}
+				<tr>
+					<th>Comptes
+					</th>
+					<td>
+						{% if g_r_c.compteGRCS is defined  and is_granted('ROLE_ADMIN_GRCS') %}
+							<ul class="list-group">
+								{% for compte in g_r_c.compteGRCS %}
+									<li class="list-item">
+										{{compte}}
+										-
+										<b>
+											{{compte.quantiteDiesel}}
+											L - Dies. ;
+											{{compte.quantiteEssence}}
+											L Ess.
+										</b>
+									</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+
+						{% if g_r_c.compteGRCS is defined  and is_granted('ROLE_ADMIN_GD_FSS') %}
+							<a href="{{path('app_approvisionnement_g_r_c_s_new',{'id': app.user.grandFournisseur.id})}}" class="btn btn-default btn-flat">Appro. compte
+								{{app.user.grandFournisseur}}</a>
+						{% else %}
+							<span class"text-danger">
+								No Comptes GRCS
+							</span>
+						{% endif %}
+
+					</td>
+				</tr>
+				<tr>
+					<th>Utilisateurs
+					</th>
+					<td>
+						{% for user in g_r_c.users  %}
+							{{loop.index}})
+							{{ user }}
+							<br/>
+						{% endfor %}
+					</td>
+				</tr>
+			{% endif %}
+		</tbody>
+	</table>
+	{% if is_granted('ROLE_ADMIN') %}
+		{# {{ include('grcs/_delete_form.html.twig') }} #}
+	{% endif %}
+{% endblock %}

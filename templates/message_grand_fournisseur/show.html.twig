@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MessageGrandFournisseur{% endblock %}
+{% block ariane %}
+{{parent() }} Message Grand Fournisseur
+{% endblock %}
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Date</th>
+                <td>{{ message_grand_fournisseur.date ? message_grand_fournisseur.date|format_datetime('long') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Sujet</th>
+                <td>{{ message_grand_fournisseur.sujet }}</td>
+            </tr>
+            <tr>
+                <th>Contenu</th>
+                <td>{{ message_grand_fournisseur.contenu }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_message_grand_fournisseur_index') }}">retour à la liste</a>
+
+    <a href="{{ path('app_message_grand_fournisseur_edit', {'id': message_grand_fournisseur.id}) }}"><span class="fa fa-edit" /></a>
+
+    {{ include('message_grand_fournisseur/_delete_form.html.twig') }}
+{% endblock %}

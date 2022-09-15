@@ -1,0 +1,339 @@
+<!-- Navbar -->
+<nav class="main-header navbar navbar-expand-md {% if is_granted('ROLE_ADMIN_GD_FSS') %} navbar-dark {% else %} navbar-light  navbar-white {% endif %}">
+	<div class="container">
+		<a href="#" class="navbar-brand">
+			<img src="{{asset('images/essence6.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+			<span class="brand-text font-weight-light">Ice Fuel
+			</span>
+		</a>
+
+		<button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div
+			class="collapse navbar-collapse order-3" id="navbarCollapse">
+			<!-- Left navbar links -->
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" data-widget="pushmenu" href="#" role="button">
+						<i class="fas fa-bars"></i>
+					</a>
+				</li>
+				{# {% if is_granted('IS_AUTHENTICATED_FULLY') %} #}
+				<li class="nav-item d-none d-sm-inline-block">
+					<a href="{{url('app_accueil')}}" class="nav-link">Accueil
+					</a>
+				</li>
+				{# {% endif %} #}
+				<li class="nav-item dropdown no-arrow d-none d-sm-inline-block">
+					<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span>Configurations
+						</span>
+					</a>
+					<!-- Dropdown - User Information -->
+					<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+						<a title="Liste de paiements" class="dropdown-item" href="{{url('app_g_r_c_s_new')}}">
+							<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+							Infos GRCS
+						</a>
+						{% if is_granted('ROLE_ADMIN_PT_CL') %}
+							<div class="dropdown-divider"></div>
+							<a title="Infos " class="dropdown-item" href="{{url('app_petit_client_show',{'id': app.user.petitClient.id })}}">
+								<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+								Infos
+								{{app.user.petitClient|upper}}
+							</a>
+						{% endif %}
+						{% if is_granted('ROLE_ADMIN_GD_FSS') %}
+							<div class="dropdown-divider"></div>
+							<a title="Infos " class="dropdown-item" href="{{url('app_grand_fournisseur_show',{'id': app.user.grandFournisseur.id })}}">
+								<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+								Infos
+								{{app.user.grandFournisseur}}
+							</a>
+						{% endif %}
+						{% if is_granted('ROLE_ADMIN') %}
+							<div class="dropdown-divider"></div>
+							<a title="Liste de paiements" class="dropdown-item text-danger" href="{{url('app_grand_fournisseur_new')}}">
+								<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+								Créer grand founisseur
+							</a>
+							<div class="dropdown-divider"></div>
+							<a title="Liste de paiements" class="dropdown-item text-danger" href="{{url('app_petit_client_new')}}">
+								<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+								Créer petit client entreprise
+							</a>
+							<div class="dropdown-divider"></div>
+							<a title="Prix carburant " class="dropdown-item text-danger" href="{{url('app_petit_client_particulier_new')}}">
+								<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+								Créer petit client paticulier
+							</a>
+							<div class="dropdown-divider"></div>
+							<a title="Liste de paiements" class="dropdown-item text-danger" href="{{url('app_g_r_c_s_index')}}">
+								<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+								Prix carburant
+							</a>
+						{% endif %}
+					</div>
+				</li>
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					<li class="nav-item dropdown no-arrow d-none d-sm-inline-block">
+						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span>Utilisateurs
+							</span>
+						</a>
+						<!-- Dropdown - User Information -->
+						<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+							{% if is_granted('ROLE_ADMIN_PT_CL') or is_granted('ROLE_ADMIN_GD_FSS') or is_granted('ROLE_ADMIN_GRCS') %}
+								<a title="Liste de paiements" class="dropdown-item" href="{{url('app_register')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Nouvel utilisateur
+								</a>
+								<div class="dropdown-divider"></div>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN') %}
+								<a title="Nouveau admin" class="dropdown-item" href="{{url('app_register_adm')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Nouveau admin
+								</a>
+								<div class="dropdown-divider"></div>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_GRCS') %}
+								<a title="Liste de paiements" class="dropdown-item" href="{{url('app_register_adm_grcs')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Nouveau admin. GRCS
+								</a>
+								<div class="dropdown-divider"></div>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_GD_FSS') %}
+								<a title="Liste de paiements" class="dropdown-item" href="{{url('app_register_adm_gdfss')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Nouveau admin. Grand fourn.
+								</a>
+								<div class="dropdown-divider"></div>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_PT_CL') %}
+								<a title="Liste de paiements" class="dropdown-item" href="{{url('app_register_adm_pcl')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Nouveau admin. petit client
+								</a>
+								<div class="dropdown-divider"></div>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_ADMIN_GRCS') or is_granted('ROLE_ADMIN_GD_FSS') or is_granted('ROLE_ADMIN_PT_CL')  %}
+								<a title="Liste de paiements" class="dropdown-item" href="{{url('app_user_index')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Tous les Utilisateurs
+								</a>
+							{% endif %}
+
+						</div>
+					</li>
+				{% endif %}
+				{% if not is_granted('ROLE_ADMIN') %}
+					<li class="nav-item dropdown no-arrow d-none d-sm-inline-block">
+						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span>Tickets
+							</span>
+						</a>
+						<!-- Dropdown - User Information -->
+						<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+							{% if app.user %}
+								{% if is_granted('ROLE_PT_CL') or is_granted('ROLE_ADMIN_PT_CL') %}
+									<a title="Liste de paiements" class="dropdown-item" href="{{path('app_compte_petit_client_indexindexPetitClient',{'id': app.user.petitClient.id})}}">
+										<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+										Nouveau ticket
+									</a>
+									<div class="dropdown-divider"></div>
+								{% endif %}
+							{% endif %}
+							<a title="Liste de paiements" class="dropdown-item" href="{{path('app_ticket_index')}}">
+								<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+								Liste des tickets
+							</a>
+							<div class="dropdown-divider"></div>
+							<a title="Liste de paiements" class="dropdown-item" href="{{path('app_ticket_index')}}">
+								<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+								Tickets servies
+							</a>
+							<div class="dropdown-divider"></div>
+							<a title="Liste de paiements" class="dropdown-item" href="{{path('app_ticket_index')}}">
+								<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+								Tickets non-servies
+							</a>
+							{% if is_granted('ROLE_ADMIN_GRCS') %}
+								<div class="dropdown-divider"></div>
+								<a title="Historique des postpayés" class="dropdown-item" href="{{path('app_compte_petit_client_index')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Historique postpayés clients
+								</a>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_GRCS') or is_granted('ROLE_ADMIN_GD_FSS') %}
+								<div class="dropdown-divider"></div>
+								<a title="Historique des postpayés" class="dropdown-item" href="{{path('app_compte_g_r_c_s_index')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Historique postpayés GRCS
+								</a>
+							{% endif %}
+						</div>
+					</li>
+				{% endif %}
+
+				{% if is_granted('ROLE_ADMIN_GRCS') or is_granted('ROLE_ADMIN_GD_FSS') %}
+					<li class="nav-item dropdown no-arrow d-none d-sm-inline-block">
+						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span>Approvisionnement
+							</span>
+						</a>
+						<!-- Dropdown - User Information -->
+						<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+							{% if is_granted('ROLE_ADMIN_GRCS') %}
+								<a title="Liste de paiements" class="dropdown-item" href="{{path('app_compte_petit_client_index')}}">
+									<i class="fa fa-car fa-fw mr-2 text-gray-400"></i>
+									Approvionner client
+								</a>
+								<div class="dropdown-divider"></div>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_GD_FSS') %}
+								<a title="Liste de paiements" class="dropdown-item" href="{{path('app_approvisionnement_g_r_c_s_new',{'id': app.user.grandFournisseur.id})}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Approvisionner GRCS
+								</a>
+								<div class="dropdown-divider"></div>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_GRCS') or is_granted('ROLE_ADMIN_GD_FSS') %}
+								<a title="Liste de paiements" class="dropdown-item" href="{{path('app_approvisionnement_g_r_c_s_index')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Historique appro. GRCS
+								</a>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_GRCS') or is_granted('ROLE_ADMIN_PT_CL') %}
+								{% if not is_granted('ROLE_ADMIN_PT_CL') %}
+									<div class="dropdown-divider"></div>
+								{% endif %}
+								<a title="Liste de paiements" class="dropdown-item" href="{{path('app_approvisionnement_petit_client_index')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Historique appro. client
+								</a>
+							{% endif %}
+
+						</div>
+					</li>
+				{% endif %}
+				{% if is_granted('ROLE_ADMIN_PT_CL') %}
+					<li class="nav-item d-none d-sm-inline-block">
+						<a href="{{url('app_approvisionnement_petit_client_index')}}" class="nav-link">Approvisionnement
+						</a>
+					</li>
+					<li class="nav-item d-none d-sm-inline-block">
+						<a title="Comptes petits clients" href="{{url('app_compte_petit_client_index')}}" class="nav-link">Mes comptes
+						</a>
+					</li>
+				{% endif %}
+				{% if is_granted('ROLE_ADMIN_GRCS')  %}
+					<li class="nav-item dropdown no-arrow d-none d-sm-inline-block">
+						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span>Rapports
+							</span>
+						</a>
+						<!-- Dropdown - User Information -->
+						<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+							<a title="Liste de paiements" class="dropdown-item" href="{{path('app_approvisionnement_petit_client_index')}}">
+								<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+								Historique appro. clients
+							</a>
+							{% if is_granted('ROLE_ADMIN_GRCS') or is_granted('ROLE_ADMIN_GD_FSS') %}
+								<div class="dropdown-divider"></div>
+								<a title="Liste de paiements" class="dropdown-item" href="{{path('app_approvisionnement_g_r_c_s_index')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Historique appro. GRCS
+								</a>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_GRCS') %}
+								<div class="dropdown-divider"></div>
+								<a title="Liste de paiements" class="dropdown-item" href="{{url('app_g_r_c_s_index')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Les comptes GRCS
+								</a>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_GD_FSS') %}
+								<div class="dropdown-divider"></div>
+								<a title="Liste de paiements" class="dropdown-item" href="{{url('app_compte_petit_client_index')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Mes comptes GRCS
+								</a>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_PT_CL') %}
+								<div class="dropdown-divider"></div>
+								<a title="Liste de paiements" class="dropdown-item" href="{{url('app_compte_petit_client_index')}}">
+									<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+									Mes comptes PtCl
+								</a>
+							{% endif %}
+						</div>
+					</li>
+				{% endif %}
+
+			</ul>
+
+		</div>
+
+		<!-- Right navbar links -->
+		<ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+			<!-- Messages Dropdown Menu -->
+			<!-- Notifications Dropdown Menu -->
+				{% if not is_granted('ROLE_ADMIN') %}
+					<li class="nav-item dropdown">
+						{# j'ai enlevé les data-toggle="dropdown" dans les <a> ci-dessous et supprimés son sous menu deroulant #}
+						<a class="nav-link"  title="Voir tous les messages non lus " href="{{path("app_message_index")}}">
+						<i class="fa fa-comments text-primary"></i>
+						<span class="badge badge-success navbar-badge">
+							{% if app.user %}
+								{% if app.user.grandFournisseur %}
+									{{app.user.grandFournisseur.nombreMessage}}
+								{% elseif app.user.petitClient %}
+									{{app.user.petitClient.nombreMessage}}
+								{% elseif app.user.grcs %}
+									{{app.user.grcs.nombreMessage}}
+								{% else %}
+									10
+								{% endif %}
+							{% endif %}
+						</span>
+						</a>
+				</li>
+			{% endif %}
+			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+				<li class="nav-item dropdown no-arrow">
+					<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="mr-2 d-none d-lg-inline text-gray-600 small">
+							Bonjour
+							{{app.user|title}}
+						</span>
+						{% if app.user.photo %}
+							<img class="img-profile rounded-circle" src="{{asset('user.photo')}}" width="28em">
+						{% else %}
+							<img class="img-profile rounded-circle" src="{{asset('images/user.png')}}" width="28em">
+						{% endif %}
+					</a>
+					<!-- Dropdown - User Information -->
+					<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+						<a class="dropdown-item" href="{{ path('app_profile', {'id': app.user.id}) }}">
+							<i class="fa fa-car  fa-fw mr-2 text-gray-400"></i>
+							Voir mon profile
+						</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{{url('app_logout')}}">
+							<i class="fas fa-power-off fa-sm fa-fw mr-2 text-danger "></i>
+							Déconnexion
+						</a>
+					</div>
+				</li>
+			{% endif %}
+		</ul>
+
+
+	</div>
+</nav>
+<!-- /.navbar -->

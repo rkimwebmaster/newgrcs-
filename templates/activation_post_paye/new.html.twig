@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau  ActivationPostPaye{% endblock %}
+{% block ariane %}
+	GRCS
+	<span class="fa fa-angle-double-right"></span>
+	Mode PostPayé
+{% endblock %}
+{% block body %}
+    {{ include('activation_post_paye/_form.html.twig') }}
+
+    <a href="{{ path('app_activation_post_paye_index') }}">retour à la liste</a>
+{% endblock %}

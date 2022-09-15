@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ActivationPostPaye{% endblock %}
+{% block ariane %}
+	GRCS
+	<span class="fa fa-angle-double-right"></span>
+	Mode PostPayé
+{% endblock %}
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ activation_post_paye.id }}</td>
+            </tr>
+            <tr>
+                <th>DateDebut</th>
+                <td>{{ activation_post_paye.dateDebut ? activation_post_paye.dateDebut|format_datetime('long') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateFin</th>
+                <td>{{ activation_post_paye.dateFin ? activation_post_paye.dateFin|format_datetime('long') : '' }}</td>
+            </tr>
+            <tr>
+                <th>NombreJour</th>
+                <td>{{ activation_post_paye.nombreJour ? activation_post_paye.nombreJour.format('%y year(s), %m month(s), %d day(s)') : '' }}</td>
+            </tr>
+            <tr>
+                <th>IsCloture</th>
+                <td>{{ activation_post_paye.isCloture ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_activation_post_paye_index') }}">retour à la liste</a>
+
+    <a href="{{ path('app_activation_post_paye_edit', {'id': activation_post_paye.id}) }}"><span class="fa fa-edit" /></a>
+
+    {{ include('activation_post_paye/_delete_form.html.twig') }}
+{% endblock %}

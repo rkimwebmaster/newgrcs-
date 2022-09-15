@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ApprovisionnementPetitClient index
+{% endblock %}
+{% block lesboutons %}
+	{% if is_granted('ROLE_ADMIN_GRCS') %}
+		<a type="button" title="Ajouter nouveau " href="{{path('app_compte_petit_client_index')}}" class="btn btn-sm btn-info">
+			<i class="fas fa-plus-circle"></i>
+			Nouveau
+		</a>
+	{% endif %}
+{% endblock %}
+{% block ariane %}
+	{{parent() }}
+	Approvisionnement
+{% endblock %}
+{% block body %}
+	<table id="example1" class="table table-striped table-hover ">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Date</th>
+				<th>Petit client</th>
+				<th>Qté Diesel
+				</th>
+				<th>Qté Essence
+				</th>
+				<th>Montant</th>
+				<th>Bordereau</th>
+				<th>Numero Bordereau</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th>#</th>
+				<th>Date</th>
+				<th>Petit client</th>
+				<th>Qté Diesel
+				</th>
+				<th>Qté Essence
+				</th>
+				<th>Montant</th>
+				<th>Bordereau</th>
+				<th>Numero Bordereau</th>
+				<th>actions</th>
+			</tr>
+		</tfoot>
+		<tbody>
+			{% for approvisionnement_petit_client in approvisionnement_petit_clients %}
+				<tr>
+					<td>{{ loop.index }}</td>
+					<td>{{ approvisionnement_petit_client.date ? approvisionnement_petit_client.date|format_datetime('long') : '' }}</td>
+					<td>{{ approvisionnement_petit_client.comptePetitClient.petitClient }}</td>
+					<td>{{ approvisionnement_petit_client.quantiteDiesel }}
+						Litre(s) Diesel
+					</td>
+					<td>{{ approvisionnement_petit_client.quantiteEssence }}
+						Litre(s) Essence
+					</td>
+					<td>{{ approvisionnement_petit_client.montant }}</td>
+					<td>{{ approvisionnement_petit_client.bordereau }}</td>
+					<td>{{ approvisionnement_petit_client.numeroBordereau }}</td>
+					<td>
+						<div class="btn-group">
+							<a class="btn btn-default btn-sm" href="{{ path('app_approvisionnement_petit_client_show', {'id': approvisionnement_petit_client.id}) }}"><span class="fa fa-search-plus"/></a>
+							{% if is_granted('ROLE_ADMIN_GRCS') %}
+								<a class="btn btn-default btn-sm" href="{{ path('app_approvisionnement_petit_client_edit', {'id': approvisionnement_petit_client.id}) }}"><span class="fa fa-edit"/></a>
+							{% endif %}
+						</div>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="9" class="text-warning">aucun enregistrement dans le système.</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	{# <a href="{{ path('app_petit_client_index') }}"class="btn btn-default "> <span class="fa fa-plus-circle"> Créer nouveau </a> #}
+{% endblock %}

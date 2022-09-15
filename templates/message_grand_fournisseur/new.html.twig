@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau  MessageGrandFournisseur{% endblock %}
+{% block ariane %}
+{{parent() }} Message Grand Fournisseur
+{% endblock %}
+{% block body %}
+
+    {{ include('message_grand_fournisseur/_form.html.twig') }}
+
+    <a href="{{ path('app_message_grand_fournisseur_index') }}">retour à la liste</a>
+{% endblock %}

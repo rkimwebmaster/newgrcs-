@@ -1,0 +1,209 @@
+<!-- Main Sidebar Container -->
+<aside
+	class="main-sidebar sidebar-dark-primary elevation-4">
+	<!-- Brand Logo -->
+	<a title="Retour à la page d'accueil" href="{{path('app_accueil')}}" class="brand-link">
+		<img src="{{asset('images/essence6.png')}}" alt="Bundle Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+		<span class="brand-text font-weight-light">Ice GRCS
+		</span>
+	</a>
+
+	<!-- Sidebar -->
+	<div
+		class="sidebar">
+		<!-- Sidebar user panel (optional) -->
+		{% if app.user %}
+			<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+				<div class="image">
+					<img src="{{asset('images/user.png')}}" class="img-circle elevation-2" alt="User Image">
+				</div>
+				<div class="info">
+					<a href="{{url('app_logout')}}" title="Se deconnecter" class="d-block">{{app.user|title}}
+						est connécté(e)</a>
+				</div>
+			</div>
+		{% endif %}
+		<!-- SidebarSearch Form -->
+		<div class="form-inline">
+			<div class="input-group" data-widget="sidebar-search">
+				<input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+				<div class="input-group-append">
+					<button class="btn btn-sidebar">
+						<i class="fas fa-search fa-fw"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Sidebar Menu -->
+		<nav class="mt-2">
+			<ul
+				class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+				<!-- Add icons to the links using the .nav-icon class  with font-awesome or any other icon font library -->
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					<li class="nav-item menu-close">
+						<a href="#" class="nav-link active">
+							<i class="nav-icon fas fa-tachometer-alt"></i>
+							<p>
+								Gérer utilisateurs
+								<i class="right fas fa-angle-left"></i>
+							</p>
+						</a>
+						<ul class="nav nav-treeview">
+							{% if is_granted('ROLE_ADMIN_PT_CL') or is_granted('ROLE_ADMIN_GD_FSS') or is_granted('ROLE_ADMIN_GRCS') %}
+								<li class="nav-item">
+									<a href="{path('app_register_adm')}" class="nav-link">
+										<i class="fa fa-car  text-warning nav-icon"></i>
+										<p>Nouvel Utilisateur
+										</p>
+									</a>
+								</li>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN') %}
+								<li class="nav-item">
+									<a href="{{url('app_register_adm')}}" class="nav-link">
+										<i class="fa fa-car  text-warning nav-icon"></i>
+										<p>nouveau admin
+										</p>
+									</a>
+								</li>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_GRCS') %}
+								<li class="nav-item">
+									<a href="{{path('app_register_adm_grcs')}}" class="nav-link">
+										<i class="fa fa-car  text-warning nav-icon"></i>
+										<p>nouveau admin GRCS
+										</p>
+									</a>
+								</li>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_GD_FSS') %}
+								<li class="nav-item">
+									<a href="{{path('app_register_adm_gdfss')}}" class="nav-link">
+										<i class="fa fa-car  text-warning nav-icon"></i>
+										<p>nouveau admin Grand. fsseur
+										</p>
+									</a>
+								</li>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN_PT_CL') %}
+								<li class="nav-item">
+									<a href="{{path('app_register_adm_pcl')}}" class="nav-link">
+										<i class="fa fa-car  text-warning nav-icon"></i>
+										<p>nouveau admin petit client
+										</p>
+									</a>
+								</li>
+							{% endif %}
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_ADMIN_GRCS') or is_granted('ROLE_ADMIN_GD_FSS') or is_granted('ROLE_ADMIN_PT_CL')  %}
+								<li class="nav-item">
+									<a href="{{path('app_register')}}" class="nav-link">
+										<i class="fa fa-car  text-warning nav-icon"></i>
+										<p>Tous les utilisateurs
+										</p>
+									</a>
+								</li>
+							{% endif %}
+						</ul>
+					</li>
+				{% endif %}
+				<li class="nav-item menu-close">
+					<a href="#" class="nav-link active">
+						<i class="nav-icon fas fa-tachometer-alt"></i>
+						<p>
+							Configuration
+							<i class="right fas fa-angle-left"></i>
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="{{url('app_g_r_c_s_new')}}" class="nav-link">
+								<i class="fa fa-car  text-warning nav-icon"></i>
+								<p>Infos GRCS
+								</p>
+							</a>
+						</li>
+						{% if is_granted('ROLE_ADMIN') %}
+							<li class="nav-item">
+								<a href="{{url('app_grand_fournisseur_new')}}" class="nav-link">
+									<i class="fa fa-car  text-warning nav-icon"></i>
+									<p>Créer grand fsseur
+									</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="{{url('app_petit_client_new')}}" class="nav-link">
+									<i class="fa fa-car  text-warning nav-icon"></i>
+									<p>Créer petit client
+									</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="" class="nav-link">
+									<i class="fa fa-car  text-warning nav-icon"></i>
+									<p>Prix diesel
+									</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="" class="nav-link">
+									<i class="fa fa-car  text-warning nav-icon"></i>
+									<p>Prix essence
+									</p>
+								</a>
+							</li>
+						{% endif %}
+					</ul>
+				</li>
+				<li class="nav-item menu-open">
+					<a href="#" class="nav-link active">
+						<i class="nav-icon fas fa-tachometer-alt"></i>
+						<p>
+							Liste 
+							<i class="right fas fa-angle-left"></i>
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="" class="nav-link">
+								<i class="fa fa-car  text-warning nav-icon"></i>
+								<p>Mouvement clients
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="{{path('app_approvisionnement_petit_client_index')}}" class="nav-link">
+								<i class="fa fa-car  text-warning nav-icon"></i>
+								<p>Historiques appro. clients
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="" class="nav-link">
+								<i class="fa fa-car  text-warning nav-icon"></i>
+								<p>Historiques appro. GRCS
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="" class="nav-link">
+								<i class="fa fa-car  text-warning nav-icon"></i>
+								<p>Consommation client
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="" class="nav-link">
+								<i class="fa fa-car  text-warning nav-icon"></i>
+								<p>Mes soldes comptes
+								</p>
+							</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+		<!-- /.sidebar-menu -->
+	</div>
+	<!-- /.sidebar -->
+</aside>

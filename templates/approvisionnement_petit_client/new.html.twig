@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau  ApprovisionnementPetitClient
+{% endblock %}
+{% block ariane %}
+	{{parent() }}
+	Approvisionnement
+{% endblock %}
+{% block lesboutons %}
+	<a href="{{path('app_approvisionnement_petit_client_index') }}" title="Retour à la liste " class="btn btn-info btn-sm">
+		<i class="fa fa-reply-all"></i>
+		Rétour
+	</a>
+	<a href="{{path('app_compte_petit_client_index') }}" title="Ajouter nouveau " class="btn btn-sm btn-info">
+		<i class="fas fa-plus-circle"></i>
+		Nouveau
+	</a>
+{% endblock %}
+
+{% block body %}
+	<h3 class="text-uppercase">Compte :
+		{{approvisionnement_petit_client.comptePetitClient|upper }}
+	</h3>
+	<div class="row">
+		<div class="col-sm-6 col-6">
+			<address>
+				Entreprise :
+				<strong>{{approvisionnement_petit_client.comptePetitClient.petitClient.entreprise|upper }}
+				</strong>
+				<br>
+				Solde :
+				<span class="badge badge-info">{{approvisionnement_petit_client.comptePetitClient.quantiteDiesel}} L Diesel </span> - <span class="badge badge-success">{{approvisionnement_petit_client.comptePetitClient.quantiteEssence}} L Essence </span> 
+				<br>
+				Téléphone :
+				<a href="tel:{{approvisionnement_petit_client.comptePetitClient.petitClient.adresse.telephone}}">
+					<span class="fa fa-phone"></span>
+				</a>
+				: (+243)
+				{{approvisionnement_petit_client.comptePetitClient.petitClient.adresse.telephone}}<br>
+				Email :
+				<a href="mailto:{{approvisionnement_petit_client.comptePetitClient.petitClient.adresse.email}}">
+					<span class="fa fa-envelope"></span>
+				</a>
+				:
+				{{approvisionnement_petit_client.comptePetitClient.petitClient.adresse.email}}
+				<br>
+			</address>
+		</div>
+		<div class="col-sm-6 col-6">
+			<address class="float-right">
+            <i>
+			Date approvisionnement :
+			{{approvisionnement_petit_client.date|date('d/M/Y')}}
+		</i>
+            </address>
+		</div>
+	</div>
+	
+	{{ include('approvisionnement_petit_client/_form.html.twig') }}
+
+	{# <a >retour à la liste</a> #}
+{% endblock %}

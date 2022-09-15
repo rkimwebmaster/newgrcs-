@@ -1,0 +1,202 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User
+{% endblock %}
+{% block ariane %}
+	{{parent() }}
+	Profile
+{% endblock %}
+
+{% block lesboutons %}
+
+	<a title="Retour à la liste " class="btn btn-info btn-sm" href="{{path('app_user_index')}}">
+		<i class="fa fa-reply-all"></i>
+		Rétour
+	</a>
+	<a type="button" title="Ajouter nouveau " href="{{path('app_user_index')}}" class="btn btn-sm btn-info">
+		<i class="fas fa-plus-circle"></i>
+		Nouveau
+	</a>
+	<a type="button" title="Modifier élément  " href="{{path('app_user_index')}}" class="btn btn-sm btn-info">
+		<i class="fa fa-edit"></i>
+		Changer mot de passe
+	</a>
+	<a type="button" title="Supprimer élément" href="{{path('app_user_index')}}" class="btn btn-sm btn-info">
+		<i class="fas fa-trash"></i>
+		Desactiver le compte
+	</a>
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div
+			class="col-md-3 col">
+
+			<!-- Profile Image -->
+			<div class="card card-primary card-outline">
+				<div class="card-body box-profile">
+					<div class="text-center">
+						<img class="profile-user-img img-fluid img-circle" src="{{asset('dist/img/avatar3.png')}}" alt="User profile picture">
+					</div>
+
+					<h3 class="profile-username text-center">@{{ user }}
+
+						{{ user|title }}
+
+					</h3>
+
+					<p class="text-muted text-center">
+
+						{% set flag = '' %}
+						{% for userRight in user.roles %}
+							{% if userRight == 'ROLE_ADMIN' and flag != 1 %}
+								<span class="badge badge-danger" title="Veuillez à gerer le système en temps réel ">
+									User admin WTB
+								</span>
+								{% set flag = 1 %}
+							{% elseif userRight == 'ROLE_ADMIN_GRCS' and flag != 1 %}
+								<span class="badge badge-success" title="Veuillez à gerer le système en temps réel ">
+									Admin GRCS
+								</span>
+								{% set flag = 1 %}
+							{% elseif userRight == 'ROLE_ADMIN_GD_FSS' and flag != 1 %}
+								<span class="badge badge-info" title="Veuillez à gerer le système en temps réel ">
+									Admin Gd Fsseur
+								</span>
+								{% set flag = 1 %}
+							{% elseif userRight == 'ROLE_ADMIN_PT_CL' and flag != 1 %}
+								<span class="badge badge-dark" title="Veuillez à gerer le système en temps réel ">
+									Admin petit client
+								</span>
+								{% set flag = 1 %}
+							{% elseif userRight == 'ROLE_USER' and flag != 1 %}
+								<span class="badge badge-warning" title="Veuillez à gerer le système en temps réel ">
+									Utilisateur
+								</span>
+								{% set flag = 1 %}
+							{% endif %}
+						{% endfor %}
+
+
+					</p>
+
+					<ul class="list-group list-group-unbordered mb-3">
+						<li class="list-group-item">
+							<a href="mailto:{{user.email}}">
+								<span class="fa fa-envelope"></span>
+							</a>
+							{{user.email}}
+
+						</li>
+						{% if app.user== user %}
+							{# {{user.finaliste.identite.telephone}} #}
+						{% endif %}
+						{% if not app.user== user %}
+							<li class="list-group-item">
+								<a href="mailto:{{user.email}}">
+									<span class="fa fa-envelope"></span>
+								</a>
+								{{user.email}}
+							</li>
+						{% endif %}
+					</ul>
+					<a class="btn btn-default btn-block" href="{#{ path('user_change_pass', {'id': app.user.id}) }#}">
+						<span class="fa fa-edit"></span>
+						Changer mot de passe
+					</a>
+
+					<a class="btn btn-default btn-block" href="{#{ path('app_forgot_password_request') }#}">
+						<span class="fa fa-edit"></span>
+						Réinitialiser mot de passe
+					</a>
+				</div>
+				<!-- /.card-body -->
+			</div>
+			<!-- /.card -->
+		</div>
+		<!-- /.col -->
+
+		<div
+			class="col-md-9 col ">
+			<!-- About Me Box -->
+			<div class="card card-primary">
+				<div class="card-header">
+					<h3 class="card-title">Informations personnelles
+					</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body">
+					{% if is_granted('ROLE_ADMIN_GD_FSS') or is_granted('ROLE_ADMIN_PT_CL') %}
+						<hr>
+						<strong>
+							<i class="fas fa-map-marker-alt mr-1"></i>
+							Adresse 
+						</strong>
+						{% if is_granted('ROLE_ADMIN_GD_FSS') %}
+							{% if app.user %}
+								<p class="text-muted">{{user.grandFournisseur.adresse}}</p>
+							{% endif %}
+						{% elseif is_granted('ROLE_ADMIN_PT_CL') %}
+							{% if app.user %}
+								<p class="text-muted">{{user.petitClient.adresse}}</p>
+							{% endif %}
+						{% endif %}
+					{% endif %}
+					{% if is_granted('ROLE_ADMIN_GRCS') %}
+						<hr>
+						<strong>
+							<i class="fas fa-map-marker-alt mr-1"></i>
+							Adresse bureau
+						</strong>
+						{% if app.user.grcs %}
+							<p class="text-muted">{{user.grcs.adresse.adresse}}</p>
+						{% endif %}
+					{% endif %}
+
+
+					<hr>
+					<strong>
+						<i class="fas fa-user mr-1"></i>
+						Profile
+					</strong>
+
+					<p class="text-muted">
+						{% if is_granted('ROLE_ADMIN') %}
+							<span class="badge badge-info" title="Veuillez à gerer le système en temps réel ">
+								vous êtes admin WTB
+							</span>
+						{% elseif is_granted('ROLE_ADMIN_GRCS') %}
+							<span class="badge badge-info" title="Merci cher enseignant pour la bonne formation ">
+								vous êtes admin GCRS
+							</span>
+						{% elseif is_granted('ROLE_ADMIN_GD_FSS') %}
+							<span class="badge badge-info" title="Merci ">
+								vous êtes admin grand fournissseur 
+							</span>
+						{% elseif is_granted('ROLE_ADMIN_PT_CL') %}
+							<span class="badge badge-info" title="Courage vers le feux vert et la défense ">
+								vous êtes admin client 
+							</span>
+						{% elseif is_granted('ROLE_ADMIN_PT_CL') %}
+						<span class="badge badge-info" title="Courage vers le feux vert et la défense ">
+								vous êtes simple utilisateur 
+							</span>
+						{% endif %}
+					</p>
+				</div>
+				<!-- /.card-body -->
+				<div class="card-footer ">
+					{% if is_granted('ROLE_ADMIN') %}
+						{% if app.user %}
+							<a class="btn btn-default btn-block" href="{#{ path('enseignant_edit', {'id': app.user.enseignant.id}) }#}">
+								<span class="fa fa-edit"></span>
+								Changer infos personnelles
+							</a>
+						{% endif %}
+					{% endif %}
+				</div>
+			</div>
+			<!-- /.card -->
+		</div>
+	</div>
+{% endblock %}

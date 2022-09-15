@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index
+{% endblock %}
+{% block lesboutons %}
+{% if not is_granted('ROLE_USER') and is_granted('IS_AUTHENTICATED_FULLY') %}
+	<a type="button" title="Ajouter nouveau " href="{{path('app_register')}}" class="btn btn-sm btn-info">
+		<i class="fas fa-plus-circle"></i>
+		Nouveau
+	</a>
+	{% endif %}
+{% endblock %}
+{% block ariane %}
+	{{parent() }}
+	Utilisateurs
+{% endblock %}
+{% block body %}
+	<table id="example1" class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Email</th>
+				<th>Profile</th>
+				<th>Structure
+				</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th>#</th>
+				<th>Email</th>
+				<th>Profile</th>
+				<th>Structure
+				</th>
+				<th>actions</th>
+			</tr>
+		</tfoot>
+		<tbody>
+			{% set continue = false %}
+			{% for user in users %}
+				{% if user == app.user %}
+					{% set continue = true %}
+				{% endif %}
+				{% if not continue %}
+
+					<tr>
+						<td>{{ loop.index }}</td>
+						<td>
+							<a title="envoyer un mail" href="mailto:{{user.email}}">
+								<span class="fa fa-envelope"></span>
+							</a>
+							{{ user.email }}
+						</td>
+						<td>
+							{# {{ user.roles ? user.roles|json_encode : '' }} #}
+
+							{% set flag = '' %}
+							{% for userRight in user.roles %}
+								{% if userRight == 'ROLE_ADMIN' and flag != 1 %}
+									<span class="badge badge-danger" title="Veuillez à gerer le système en temps réel ">
+										User admin WTB
+									</span>
+									{% set flag = 1 %}
+								{% elseif userRight == 'ROLE_ADMIN_GRCS' and flag != 1 %}
+									<span class="badge badge-success" title="Veuillez à gerer le système en temps réel ">
+										Admin GRCS
+									</span>
+									{% set flag = 1 %}
+								{% elseif userRight == 'ROLE_ADMIN_GD_FSS' and flag != 1 %}
+									<span class="badge badge-info" title="Veuillez à gerer le système en temps réel ">
+										Admin Gd Fsseur
+									</span>
+									{% set flag = 1 %}
+								{% elseif userRight == 'ROLE_ADMIN_PT_CL' and flag != 1 %}
+									<span class="badge badge-dark" title="Veuillez à gerer le système en temps réel ">
+										Admin petit client
+									</span>
+									{% set flag = 1 %}
+								{% elseif userRight == 'ROLE_USER' and flag != 1 %}
+									<span class="badge badge-warning" title="Veuillez à gerer le système en temps réel ">
+										Utilisateur
+									</span>
+									{% set flag = 1 %}
+								{% endif %}
+							{% endfor %}
+
+						</td>
+						<td>
+							{% if user.grcs %}
+								{{ user.grcs }}
+							{% elseif user.grandFournisseur %}
+								{{ user.grandFournisseur }}
+							{% elseif user.petitClient %}
+								{{ user.petitClient }}
+							{% else %}
+								Utilistateur admin
+							{% endif %}
+						</td>
+						<td>
+							<div class="btn-group">
+								<a title="Voir détail" class="btn btn-default btn-sm" href="{{ path('app_profile', {'id': user.id}) }}">
+									<span class="fa fa-search-plus"></span>
+								</a>
+								<a title="Changer le mot de passe user" class="btn btn-default btn-sm" href="{{ path('user_change_pass_admin', {'id': user.id}) }}">
+									<span class="fa fa-key"></span>
+
+								</a>
+
+								{% set flag = '' %}
+								{% for userRight in user.roles %}
+									{% if userRight == 'ROLE_ENSEIGNANT' and flag != 1 %}
+										{% if user.enseignant==null%}
+											{# <a title="Completer les infos supplémentaires " class="btn btn-default btn-sm" href="{{ path('enseignant_new', {'id': user.id}) }}">
+																							<span class="fa fa-clipboard"></span>
+																						</a> #}
+										{% endif %}
+										{% set flag = 1 %}
+									{% elseif userRight == 'ROLE_FINALISTE' and flag != 1 %}
+										{% if user.finaliste==null%}
+											{# <a title="Completer les infos supplémentaires " class="btn btn-default btn-sm" href="{{path('finaliste_new', {'id': user.id})}}">
+																							<span class="fa fa-clipboard"></span>
+																						</a> #}
+										{% endif %}
+										{% set flag = 1 %}
+									{% endif %}
+								{% endfor %}
+							</div>
+						</td>
+					</tr>
+				{% endif %}
+				{% if continue %}
+					{% set continue = false %}
+				{% endif %}
+			{% else %}
+				<tr>
+					<td colspan="5" class="text-warning">aucun élément trouvé</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
