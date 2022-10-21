@@ -61,6 +61,14 @@ class ApprovisionnementPetitClient
 
         $compteGRCS->setQuantiteDiesel($compteGRCS->getQuantiteDiesel()-$quantiteDiesel);
         $compteGRCS->setQuantiteEssence($compteGRCS->getQuantiteEssence()-$quantiteEssence);
+
+        ///calcul du montant 
+        $grcs=$compteGRCS->getGrcs();
+        $prixDiesel=$grcs->getPrixDiesel();
+        $prixEssence=$grcs->getPrixEssence();
+        $prixTotalDiesel=$quantiteDiesel * $prixDiesel;
+        $prixTotalEssence=$quantiteEssence * $prixEssence;
+        $this->montant= $prixTotalDiesel + $prixTotalEssence;
     }
 
     public function __construct(ComptePetitClient $comptePetitClient, Bool $isDiesel)

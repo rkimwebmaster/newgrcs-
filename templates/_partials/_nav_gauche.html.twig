@@ -123,6 +123,15 @@
 								</p>
 							</a>
 						</li>
+						{% if is_granted('ROLE_ADMIN_PT_CL') %}
+						<li class="nav-item">
+							<a href="{{url('app_petit_client_show',{'id': app.user.petitClient.id })}}" class="nav-link">
+								<i class="fa fa-car  text-warning nav-icon"></i>
+								<p>Infos {{app.user.petitClient|upper}}
+								</p>
+							</a>
+						</li>
+						{% endif %}
 						{% if is_granted('ROLE_ADMIN') %}
 							<li class="nav-item">
 								<a href="{{url('app_grand_fournisseur_new')}}" class="nav-link">

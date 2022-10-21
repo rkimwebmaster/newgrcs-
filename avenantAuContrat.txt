@@ -1,0 +1,15 @@
+Consecutivement a la demande effectué par grcs 
+pour rendre l'application beaucoup plus professionels, 
+des nouveaux acteurs devront desormais intervenir dans le projet 
+
+* equipe chargé de certifier la securité du logiciel : 750 $ 
+* equipe chargé des beta tests : 3 x 150 $ = 450 $ 
+* designer graphiste : 100 $ 
+* equipe chargé du test non-fonctionnel ( optim., ergo., test tech...): 300 $ 
+--------------------------------------------------------------------------------
+Total : 1600 $ 
+
+comme recommandé pour tout application professionel, à un moment ce sont aussi des 
+tiers personne qui voivent valider le projet 
+comme constaté la pluspart des taches devrant se faire en equipe en vue de respecter 
+les normes et standards pour un bon developpement logiciel 

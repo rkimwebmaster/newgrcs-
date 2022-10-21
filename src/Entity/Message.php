@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\MessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 #[ORM\Table(name:"ess_message")]
@@ -35,6 +37,7 @@ class Message
     private ?PetitClient $destinataireClient = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $sujet = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -42,6 +45,9 @@ class Message
 
     #[ORM\Column(nullable: true)]
     private ?bool $isLu = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $createdAt = null;
 
     
     #[ORM\PrePersist]
@@ -68,6 +74,7 @@ class Message
     {
        $this->date= new \DateTimeImmutable();
        $this->isLu=false;
+       $this->createdAt=new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -179,6 +186,18 @@ class Message
     public function setIsLu(?bool $isLu): self
     {
         $this->isLu = $isLu;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

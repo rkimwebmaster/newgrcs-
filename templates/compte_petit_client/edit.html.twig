@@ -4,10 +4,13 @@
 {% block ariane %}
 {{parent() }} Compte client 
 {% endblock %}
+{% block lesboutons %}
+													
+												{% endblock %}
 {% block body %}
     {{ include('compte_petit_client/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
-
+{# 
     <a href="{{ path('app_compte_petit_client_index') }}">retour à la liste</a>
 
-    {{ include('compte_petit_client/_delete_form.html.twig') }}
+    {{ include('compte_petit_client/_delete_form.html.twig') }} #}
 {% endblock %}

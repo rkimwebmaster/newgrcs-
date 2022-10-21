@@ -10,6 +10,7 @@ use App\Repository\ComptePetitClientRepository;
 use App\Repository\GrandFournisseurRepository;
 use App\Repository\PetitClientRepository;
 use App\Repository\TicketRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,8 @@ class TicketController extends AbstractController
         if ($this->isGranted('ROLE_ADMIN_PT_CL')) {
             $petitClient = $this->getUser()->getPetitClient();
             $comptePetitClient = $comptePetitClientRepository->findOneBy(['petitClient' => $petitClient]);
-            $objets = $ticketRepository->findBy(['comptePetitClient' => $comptePetitClient]);
+            
+            $objets = $ticketRepository->findBy(['comptePetitClient' => $comptePetitClient],['createdAt'=>'DESC','isServi'=>'ASC']);
             if (!$objets) {
                 $this->addFlash('info', 'Aucune donnée dans le système.');
             }
@@ -33,13 +35,69 @@ class TicketController extends AbstractController
                 'tickets' => $ticketRepository->findAll(),
             ]);
         }
-        $objets = $ticketRepository->findAll();
+        // dd('jambo');
+        $objets = $ticketRepository->findBy([],['createdAt'=>'DESC','isServi'=>'ASC']);
         if (!$objets) {
             $this->addFlash('info', 'Aucune donnée dans le système.');
         }
 
         return $this->render('ticket/index.html.twig', [
-            'tickets' => $ticketRepository->findAll(),
+            'tickets' => $objets,
+        ]);
+    }
+
+    #[Route('/servie', name: 'app_ticket_servie_index', methods: ['GET'])]
+    public function indexServie(TicketRepository $ticketRepository, ComptePetitClientRepository $comptePetitClientRepository): Response
+    {
+        if ($this->isGranted('ROLE_ADMIN_PT_CL')) {
+            $petitClient = $this->getUser()->getPetitClient();
+            $comptePetitClient = $comptePetitClientRepository->findOneBy(['petitClient' => $petitClient]);
+            
+            $objets = $ticketRepository->findBy(['comptePetitClient' => $comptePetitClient,'isServi'=>true],['createdAt'=>'DESC','isServi'=>'ASC']);
+            if (!$objets) {
+                $this->addFlash('info', 'Aucune donnée dans le système.');
+            }
+
+            return $this->render('ticket/index.html.twig', [
+                'tickets' => $objets,
+            ]);
+        }
+        // dd('jambo');
+        $objets = $ticketRepository->findBy(['isServi'=>true],['createdAt'=>'DESC','isServi'=>'ASC']);
+        if (!$objets) {
+            $this->addFlash('info', 'Aucune donnée dans le système.');
+        }
+
+        return $this->render('ticket/index.html.twig', [
+            'tickets' => $objets,
+        ]);
+    }
+
+    
+    #[Route('/nonServie', name: 'app_ticket_non_servie_index', methods: ['GET'])]
+    public function indexNonServie(TicketRepository $ticketRepository, ComptePetitClientRepository $comptePetitClientRepository): Response
+    {
+        if ($this->isGranted('ROLE_ADMIN_PT_CL')) {
+            $petitClient = $this->getUser()->getPetitClient();
+            $comptePetitClient = $comptePetitClientRepository->findOneBy(['petitClient' => $petitClient]);
+            
+            $objets = $ticketRepository->findBy(['comptePetitClient' => $comptePetitClient,'isServi'=>false],['createdAt'=>'DESC','isServi'=>'ASC']);
+            if (!$objets) {
+                $this->addFlash('info', 'Aucune donnée dans le système.');
+            }
+
+            return $this->render('ticket/index.html.twig', [
+                'tickets' => $objets,
+            ]);
+        }
+        // dd('jambo');
+        $objets = $ticketRepository->findBy(['isServi'=>false],['createdAt'=>'DESC','isServi'=>'ASC']);
+        if (!$objets) {
+            $this->addFlash('info', 'Aucune donnée dans le système.');
+        }
+
+        return $this->render('ticket/index.html.twig', [
+            'tickets' => $objets,
         ]);
     }
 
@@ -65,10 +123,10 @@ class TicketController extends AbstractController
             }
 
             $fournisseur = $comptePetitClient->getCompteGRCS()->getGrandFournisseur();
-            
-            
+
+
             $message = new Message();
-            $contenu = "Bonjour, Nous tenons à vous informé ce jour que la création du ticket ".$ticket." a eu lieux. Cordialement.";
+            $contenu = "Bonjour, Nous tenons à vous informé ce jour que la création du ticket " . $ticket . " a eu lieux. Cordialement.";
             $message->setSujet('Création du ticket')->setContenu($contenu);
             $fournisseur->addMessage($message);
             $grandFournisseurRepository->add($fournisseur, true);
@@ -113,18 +171,45 @@ class TicketController extends AbstractController
     }
 
     #[Route('/{id}/servi', name: 'app_ticket_servi', methods: ['GET', 'POST'])]
-    public function servi(Request $request, PetitClientRepository $petitClientRepository, Ticket $ticket, TicketRepository $ticketRepository): Response
+    public function servi(Request $request, PetitClientRepository $petitClientRepository, Ticket $ticket, TicketRepository $ticketRepository, EntityManagerInterface $entityManagerInterface): Response
     {
         $ticket->setIsServi(true);
+        $ticket->setDateRetrait(new \DateTimeImmutable());
         $ticketRepository->add($ticket, true);
 
-        
-        $petitClient = $ticket->getComptePetitClient()->getPetitClient();
+        //mise a jour de la quantité du compte client 
+
+        $comptePetitClient = $ticket->getComptePetitClient();
+        $compteGRCS=$ticket->getComptePetitClient()->getCompteGRCS();
+
+        $quantite = $ticket->getQuantite();
+
+        if ($ticket->getTypeCarburant() == "Diesel") {
+            $comptePetitClient->setQuantiteDiesel($comptePetitClient->getQuantiteDiesel() - $quantite);
+            $compteGRCS->setQteDieselNonServie($compteGRCS->getQteDieselNonServie()-$quantite);
+        } elseif ($ticket->getTypeCarburant() == "Essence") {
+            $comptePetitClient->setQuantiteEssence($comptePetitClient->getQuantiteEssence() - $quantite);
+            $compteGRCS->setQteEssenceNonServie($compteGRCS->getQteEssenceNonServie()-$quantite);
+
+        } else {
+            $this->addFlash('danger', 'Une erreur a été detecté dans les données.');
+            return $this->redirectToRoute('app_ticket_index', [], Response::HTTP_SEE_OTHER);
+        }
+        //fin mise a jour du compte client 
+
+        $petitClient = $comptePetitClient->getPetitClient();
+        // $comptePetitClient->setQuantiteDiesel()
         $message = new Message();
-        $contenu = "Bonjour, Nous tenons à vous informé ce jour que le ticket ".$ticket." est servi. Cordialement.";
+        $contenu = "Bonjour, Nous tenons à vous informé ce jour que le ticket " . $ticket . " est servi. Cordialement.";
         $message->setSujet('Ticket servi')->setContenu($contenu);
         $petitClient->addMessage($message);
         $petitClientRepository->add($petitClient, true);
+
+        //enregistrer le compte grcs avec les maj de qte non servie 
+        $entityManagerInterface->persist($compteGRCS);
+        $entityManagerInterface->flush();
+
+        
 
         $this->addFlash('success', 'Opération réussie. Le ticket passe en état servi.');
 

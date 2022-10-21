@@ -30,7 +30,8 @@ class UserController extends AbstractController
             }
         }elseif($this->isGranted('ROLE_ADMIN_PT_CL')){
             $structure = $this->getUser()->getPetitClient();
-            $objets = $userRepository->findBy(['grandFournisseur' => $structure]);
+            // dd($structure);
+            $objets = $userRepository->findBy(['petitClient' => $structure]);
             if (!$objets) {
                 $this->addFlash('info', 'Aucune donnée dans le système.');
             }

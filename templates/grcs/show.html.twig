@@ -16,7 +16,7 @@
 	{% if is_granted('ROLE_ADMIN_GRCS') %}
 		<a href="{{path('app_g_r_c_s_carburant',{id: g_r_c.id })}}" title="Modifier prix carburant   " class="btn btn-sm btn-warning">
 			<i class="fas fa-edit"></i>
-			Prix Carburant & Qté de service 
+			Prix Carburant & Qté de service
 		</a>
 	{% endif %}
 
@@ -45,21 +45,32 @@
 					</th>
 					<td>
 						{% for compte in g_r_c.compteGRCS %}
-							{% if not compte.isPostPaye %}
-								<a class="btn btn-default btn-sm" href="{{ path('app_activation_post_paye_g_r_c_s_new', {'id': compte.id}) }}"><span class="fa fa-star"/>postPayer</a>
-							{% else %}
-								<a class="btn btn-default btn-sm" href="{{ path('app_compte_g_r_c_s_desactiver_pp', {'id': compte.id}) }}"><span class="fa fa-star"/>desactiver postpayé
-								</a>
-							{% endif %}
-
 							{% if compte.grandFournisseur == app.user.grandFournisseur %}
 								{{compte}}
-								<div class="badge badge-warning">{{compte.quantiteDiesel}}
-									L Diesel
+								<div class="badge badge-warning">
+								Diesel: 
+								{{compte.quantiteDiesel}}
+									L réel; 
+									{{compte.qteDieselNonServie}}
+									L Non servie; 
+									{{compte.quantiteDiesel + compte.qteDieselNonServie}}
+									L Total 
 								</div>
-								<div class="badge badge-success">{{compte.quantiteEssence}}
-									L Essence
+								<div class="badge badge-success">
+								Essence: 
+								{{compte.quantiteEssence}}
+									L réel;
+									{{compte.qteEssenceNonServie}}
+									L Non servie;
+									{{compte.quantiteEssence + compte.qteEssenceNonServie}}
+									L Total
 								</div>
+								{% if not compte.isPostPaye %}
+									<a class="btn btn-default btn-sm" href="{{ path('app_activation_post_paye_g_r_c_s_new', {'id': compte.id}) }}"><span class="fa fa-star"/>activer postPayer</a>
+								{% else %}
+									<a class="btn btn-default btn-sm" href="{{ path('app_compte_g_r_c_s_desactiver_pp', {'id': compte.id}) }}"><span class="fa fa-star"/>desactiver postpayé
+									</a>
+								{% endif %}
 							{% endif %}
 
 
@@ -102,22 +113,26 @@
 						</div>
 					</td>
 				</tr>
-				<tr>
-					<th>Qté stock recommandée diesel</th>
-					<td>
-						<div class="badge badge-default">
-							{{ g_r_c.qteStockRecommandeDiesel ? g_r_c.qteStockRecommandeDiesel : 'Non configuré' }} L
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<th>Qté stock recommandée essence</th>
-					<td>
-						<div class="badge badge-default">
-							{{ g_r_c.qteStockRecommandeEssence ? g_r_c.qteStockRecommandeEssence : 'Non configuré' }} L
-						</div>
-					</td>
-				</tr>
+				{% if not is_granted('ROLE_ADMIN_PT_CL')  %}
+					<tr>
+						<th>Qté stock recommandée diesel</th>
+						<td>
+							<div class="badge badge-default">
+								{{ g_r_c.qteStockRecommandeDiesel ? g_r_c.qteStockRecommandeDiesel : 'Non configuré' }}
+								L
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>Qté stock recommandée essence</th>
+						<td>
+							<div class="badge badge-default">
+								{{ g_r_c.qteStockRecommandeEssence ? g_r_c.qteStockRecommandeEssence : 'Non configuré' }}
+								L
+							</div>
+						</td>
+					</tr>
+				{% endif %}
 				<tr>
 					<th>Envoyer message à GRCS
 					</th>

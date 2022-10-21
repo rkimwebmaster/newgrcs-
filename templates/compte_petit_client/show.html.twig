@@ -13,11 +13,20 @@
 		Liste
 	</a>
     {% endif %}
-	{% if is_granted('ROLE_ADMIN_GD_FSS') %}
-        <a title="Modifier nouveau " href="{{path('app_compte_petit_client_edit', {id: compte_petit_client.id })}}" class="btn btn-sm btn-info">
+	{% if is_granted('ROLE_ADMIN_GRCS') %}
+        {# <a title="Modifier nouveau " href="{{path('app_compte_petit_client_edit', {id: compte_petit_client.id })}}" class="btn btn-sm btn-info">
 			<i class="fas fa-edit"></i>
 			Modifier 
-		</a>
+		</a> #}
+		{# <a title="Modifier nouveau " href="{{path('app_compte_petit_client_delete', {id: compte_petit_client.id })}}" class="btn btn-sm btn-info">
+			<i class="fas fa-trash"></i>
+			Supprimer 
+		</a> #}
+		<form class="m-0 p-0" method="post" action="{{ path('app_compte_petit_client_delete', {'id': compte_petit_client.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer définitivement cet élément?');">
+    <input lass="m0 p0" type="hidden" name="_token" value="{{ csrf_token('delete' ~ compte_petit_client.id) }}">
+    <button class="btn btn-default "> <span class="fa fa-times-circle " > Supprimer  </button>
+    
+</form>
 	{% endif %}
 {% endblock %}
 {% block body %}

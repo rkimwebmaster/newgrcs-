@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\ApprovisionnementPetitClient;
 use App\Entity\ComptePetitClient;
+use App\Entity\Message;
 use App\Entity\PetitClient;
 use App\Form\ApprovisionnementPetitClientType;
 use App\Repository\ApprovisionnementPetitClientRepository;
 use App\Repository\CompteGRCSRepository;
 use App\Repository\ComptePetitClientRepository;
+use App\Repository\PetitClientRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,7 +73,7 @@ class ApprovisionnementPetitClientController extends AbstractController
     }
 
     #[Route('/new/{id}', name: 'app_approvisionnement_petit_client_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ComptePetitClient $comptePetitClient, ApprovisionnementPetitClientRepository $approvisionnementPetitClientRepository, SluggerInterface $slugger): Response
+    public function new(Request $request,PetitClientRepository $petitClientRepository, ComptePetitClient $comptePetitClient, ApprovisionnementPetitClientRepository $approvisionnementPetitClientRepository, SluggerInterface $slugger): Response
     {
         if (!$this->isGranted('ROLE_ADMIN_GRCS')) {
             $this->addFlash('info', 'Vous ne pouvez acceder à cette fonctionnalité.');
@@ -147,6 +149,16 @@ class ApprovisionnementPetitClientController extends AbstractController
                 }
                 $this->addFlash('info', 'Le compte '.$compteGRCS.' est en mode postpayé.');
             }
+
+            ///notifier le petit client 
+            //creation du message de notofication 
+            $petitClient=$comptePetitClient->getPetitClient();
+            $message=new Message();
+            $contenu="Bonjour, Nous tenons à vous informé ce jour que le compte ".$comptePetitClient." a été approvisionné. Cordialement.";
+            $message->setSujet('Compte approvionné')->setContenu($contenu);
+            $petitClient->addMessage($message);
+            //fin 
+            $petitClientRepository->add($petitClient, true);
             $approvisionnementPetitClientRepository->add($approvisionnementPetitClient, true);
             $this->addFlash('success', 'Opération réussie.');
 

@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
-#[ORM\Table(name:"ess_ticket")]
+#[ORM\Table(name: "ess_ticket")]
 #[ORM\HasLifecycleCallbacks()]
 class Ticket
 {
@@ -51,24 +51,49 @@ class Ticket
     #[ORM\JoinColumn(nullable: false)]
     private $comptePetitClient;
 
-    #[ORM\Column(length: 255, nullable:false)]
+    #[ORM\Column(length: 255, nullable: false)]
     private ?string $typeCarburant = null;
 
-    
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function misAJour(){
-        $this->comptePetitClient->getCompteGRCS()->getGrandFournisseur()->incrementerNotification();
+    #[ORM\Column(nullable: true)]
+    private ?bool $isDiesel = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    public function __toString()
+    {
+        return $this->typeCarburant;
     }
 
-    public function __construct(ComptePetitClient $comptePetitClient){
-        $this->comptePetitClient=$comptePetitClient;
-        $this->date=new \DateTimeImmutable();
-        $this->dateRetrait=new \DateTime("+2 days");
-        $this->isCredit=false;
-        $this->totalMontant=00;
-        $this->isServi=false;
-        
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function misAJour()
+    {
+        $compteGRCS = $this->comptePetitClient->getCompteGRCS();
+        $compteGRCS->getGrandFournisseur()->incrementerNotification();
+        $qte = $this->getQuantite();
+        if ($this->typeCarburant == "diesel") {
+            $this->isDiesel = true;
+            $compteGRCS->setQteDieselNonServie($compteGRCS->getQteDieselNonServie() + $qte);
+            $this->setTotalMontant($compteGRCS->getGrcs()->getPrixDiesel()*$qte);
+        } else {
+            $this->isDiesel = false;
+            $compteGRCS->setQteEssenceNonServie($compteGRCS->getQteEssenceNonServie() + $qte);
+            $this->setTotalMontant($compteGRCS->getGrcs()->getPrixEssence()*$qte);
+
+        }
+    }
+
+    public function __construct(ComptePetitClient $comptePetitClient)
+    {
+        $this->comptePetitClient = $comptePetitClient;
+        $this->date = new \DateTimeImmutable();
+        $this->dateRetrait = new \DateTime("+2 days");
+        $this->isCredit = false;
+        $this->totalMontant = 00;
+        $this->isServi = false;
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -216,6 +241,30 @@ class Ticket
     public function setTypeCarburant(string $typeCarburant): self
     {
         $this->typeCarburant = $typeCarburant;
+
+        return $this;
+    }
+
+    public function isIsDiesel(): ?bool
+    {
+        return $this->isDiesel;
+    }
+
+    public function setIsDiesel(?bool $isDiesel): self
+    {
+        $this->isDiesel = $isDiesel;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

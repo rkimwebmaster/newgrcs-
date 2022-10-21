@@ -30,7 +30,8 @@
 		<link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
 	</head>
 	<body class="hold-transition sidebar-collapse layout-top-nav {% if is_granted('ROLE_ADMIN_GRCS') %} dark-mode {% endif %} ">
-		<div	class="wrapper">
+		<div
+			class="wrapper">
 
 			<!-- Navbar -->
 			{% include '_partials/_header.html.twig' %}
@@ -40,9 +41,8 @@
 			{% include '_partials/_nav_gauche.html.twig'%}
 
 			<!-- Content Wrapper. Contains page content -->
-			<div
-				class="content-wrapper">
-				<!-- Content Header (Page header) -->
+				<div
+				class="content-wrapper"> <!-- Content Header (Page header) -->
 				<div class="content-header">
 					<div class="container">
 						<div class="row mb-2">
@@ -51,16 +51,19 @@
 									{% block ariane %}
 										{% if app.user %}
 											{% if app.user.grcs %}
-												{{app.user.grcs|upper}} ₪
+												{{app.user.grcs|upper}}
+												₪
 											{% elseif app.user.grandFournisseur %}
-												{{app.user.grandFournisseur|upper}} ⛽ 
+												{{app.user.grandFournisseur|upper}}
+												⛽
 											{% elseif app.user.petitClient %}
-												{{app.user.petitClient|upper}} ֍
+												{{app.user.petitClient|upper}}
+												֍
 											{% else %}
 												Control Panel ۩
 											{% endif %}
 										{% endif %}
-										
+
 										<span class="fa fa-angle-double-right"></span>
 									{% endblock %}
 								</h1>
@@ -77,25 +80,25 @@
 									{% endif %}
 									{% if is_granted('ROLE_ADMIN_GRCS') or not is_granted('ROLE_ADMIN_PT_CL') %}
 										{% if not is_granted('ROLE_ADMIN_GD_FSS') %}
-										<li class="breadcrumb-item">
-											<a href="{{path('app_petit_client_index')}}" title="Tous les clients  ">
-												Clients
-											</a>
-										</li>
+											<li class="breadcrumb-item">
+												<a href="{{path('app_petit_client_index')}}" title="Tous les clients  ">
+													Clients
+												</a>
+											</li>
 										{% endif %}
-										
+
 									{% endif %}
 									{% if is_granted('ROLE_ADMIN_GRCS') or not is_granted('ROLE_ADMIN') %}
 										<li class="breadcrumb-item">
 											<a href="{{path('app_g_r_c_s_index')}}" title="Comptes Clients ">
-											GRCS
-											{# <span class="d-lg ">Clients</span> #}
+												GRCS
+												{# <span class="d-lg ">Clients</span> #}
 											</a>
 										</li>
 										<li class="breadcrumb-item">
 											<a href="{{path('app_compte_petit_client_index')}}" title="Comptes Clients ">
-											Comptes cl.
-											{# <span class="d-lg ">Clients</span> #}
+												Comptes cl.
+												{# <span class="d-lg ">Clients</span> #}
 											</a>
 										</li>
 										<li class="breadcrumb-item">
@@ -112,7 +115,8 @@
 										</li>
 									{% endif %}
 									<li class="breadcrumb-item">
-										<a href="{{path('app_user_index')}}">Users </a>
+										<a href="{{path('app_user_index')}}">Users
+										</a>
 									</li>
 								</ol>
 							</div>
@@ -123,6 +127,27 @@
 					<!-- /.container-fluid -->
 				</div>
 				<!-- /.content-header -->
+
+				<div class="content">
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-12">
+								{% for label, flashes in app.session.flashbag.all %}
+									{% for flash in flashes %}
+										<div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+											<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+											<strong>
+												<i class="icon fas fa-ban"></i>
+												{{ label|title }}
+												!</strong>
+											{{ flash }}
+										</div>
+									{% endfor %}
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
 
 				<!-- Main content -->
 				<div class="content">
@@ -164,9 +189,7 @@
 									</div>
 									<div class="card-body">
 										<div class="row">
-											<div class="col-md-12"> 
-											{% block body %}
-											{% endblock %}
+											<div class="col-md-12"> {% block body %}{% endblock %}
 												</div>
 												<!-- /.col -->
 											</div>
@@ -243,3 +266,4 @@ bsCustomFileInput.init()
 			</script>
 		</body>
 	</html>
+</body></html>

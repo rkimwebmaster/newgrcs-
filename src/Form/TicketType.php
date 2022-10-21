@@ -20,10 +20,9 @@ class TicketType extends AbstractType
             ->add('nomChauffeur')
             ->add('numeroPlaqueImmatriculation')
             ->add('isGroupeElectrogene')
-            ->add('dateRetrait')
+            // ->add('dateRetrait')
             ->add('typeCarburant', ChoiceType::class,[
                 'choices'=>[
-                    'Choisir carburant'=>null,
                     'Diesel'=>'Diesel',
                     'Essence'=>'Essence',
                 ],

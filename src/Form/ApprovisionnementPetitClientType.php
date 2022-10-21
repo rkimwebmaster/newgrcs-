@@ -65,7 +65,7 @@ class ApprovisionnementPetitClientType extends AbstractType
             //         'label'=>"Repetez la même quantité.",
             //     ]
             // ])
-            ->add('montant')
+            // ->add('montant')
             // ->add('bordereau')
             ->add('brochure', FileType::class, [
                 'label' => 'Fichier bordereau (JPEG, PNG file)',

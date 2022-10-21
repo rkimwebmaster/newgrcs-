@@ -54,6 +54,12 @@ class CompteGRCS
     #[ORM\Column(nullable: true)]
     private ?float $pourcentageEssence = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $qteDieselNonServie = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $qteEssenceNonServie = null;
+
     
     #[ORM\PrePersist]
     #[ORM\PostLoad]
@@ -86,6 +92,8 @@ class CompteGRCS
         $this->approvisionnementGRCS = new ArrayCollection();
         $this->quantiteDiesel=0;
         $this->quantiteEssence=0;
+        $this->qteDieselNonServie=0;
+        $this->qteEssenceNonServie=0;
         $this->dateDernierApprovisionnement=new \DateTimeImmutable();
         $this->activationPostPayeGRCS = new ArrayCollection();
         $this->isPostPaye=false;
@@ -278,6 +286,30 @@ class CompteGRCS
     public function setPourcentageEssence(?float $pourcentageEssence): self
     {
         $this->pourcentageEssence = $pourcentageEssence;
+
+        return $this;
+    }
+
+    public function getQteDieselNonServie(): ?int
+    {
+        return $this->qteDieselNonServie;
+    }
+
+    public function setQteDieselNonServie(?int $qteDieselNonServie): self
+    {
+        $this->qteDieselNonServie = $qteDieselNonServie;
+
+        return $this;
+    }
+
+    public function getQteEssenceNonServie(): ?int
+    {
+        return $this->qteEssenceNonServie;
+    }
+
+    public function setQteEssenceNonServie(?int $qteEssenceNonServi): self
+    {
+        $this->qteEssenceNonServie = $qteEssenceNonServi;
 
         return $this;
     }

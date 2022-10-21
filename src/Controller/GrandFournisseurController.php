@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 #[Route('/grand/fournisseur')]
 class GrandFournisseurController extends AbstractController
@@ -24,26 +26,26 @@ class GrandFournisseurController extends AbstractController
     #[Route('/', name: 'app_grand_fournisseur_index', methods: ['GET'])]
     public function index(GrandFournisseurRepository $grandFournisseurRepository): Response
     {
-        $objets=$grandFournisseurRepository->findAll();
-        if(!$objets){
-            $this->addFlash('info','Aucune donnée dans le système.');
+        $objets = $grandFournisseurRepository->findAll();
+        if (!$objets) {
+            $this->addFlash('info', 'Aucune donnée dans le système.');
         }
-        if($this->isGranted('ROLE_ADMIN_GD_FSS')){
-            $grandFournisseur=$this->getUser()->getGrandFournisseur();
-            return $this->redirectToRoute('app_grand_fournisseur_show', ['id'=>$grandFournisseur->getId()], Response::HTTP_SEE_OTHER);  
+        if ($this->isGranted('ROLE_ADMIN_GD_FSS')) {
+            $grandFournisseur = $this->getUser()->getGrandFournisseur();
+            return $this->redirectToRoute('app_grand_fournisseur_show', ['id' => $grandFournisseur->getId()], Response::HTTP_SEE_OTHER);
         }
         return $this->render('grand_fournisseur/index.html.twig', [
-            'grand_fournisseurs' => $objets ,
+            'grand_fournisseurs' => $objets,
         ]);
     }
 
     #[Route('/new', name: 'app_grand_fournisseur_new', methods: ['GET', 'POST'])]
-    public function new(Request $request,CompteGRCSRepository $compteGRCSRepository, GrandFournisseurRepository $grandFournisseurRepository, GRCSRepository $gRCSRepository, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, ValidatorInterface $validator, CompteGRCSRepository $compteGRCSRepository, GrandFournisseurRepository $grandFournisseurRepository, GRCSRepository $gRCSRepository, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
-        $grcs=$gRCSRepository->findOneBy([]);
-        if(!$grcs){
-            $this->addFlash('info','Aucun grcs dans le système. Créez-en un au préalable.');
-            return $this->redirectToRoute('app_g_r_c_s_new', [], Response::HTTP_SEE_OTHER);  
+        $grcs = $gRCSRepository->findOneBy([]);
+        if (!$grcs) {
+            $this->addFlash('info', 'Aucun grcs dans le système. Créez-en un au préalable.');
+            return $this->redirectToRoute('app_g_r_c_s_new', [], Response::HTTP_SEE_OTHER);
         }
         $grandFournisseur = new GrandFournisseur();
         $form = $this->createForm(GrandFournisseurType::class, $grandFournisseur);
@@ -51,28 +53,51 @@ class GrandFournisseurController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             //creation d'un compte GRCS associé a ce fournisseur 
-            $grcs=$gRCSRepository->findOneBy([]);
-            if(!$grcs){
-                $this->addFlash('warning','Aucun GRCS existe dans le système');
+            $grcs = $gRCSRepository->findOneBy([]);
+            if (!$grcs) {
+                $this->addFlash('warning', 'Aucun GRCS existe dans le système');
                 return $this->redirectToRoute('app_grand_fournisseur_index', [], Response::HTTP_SEE_OTHER);
-    
             }
-            $compteGRCS=new CompteGRCS($grandFournisseur);
+            $compteGRCS = new CompteGRCS($grandFournisseur);
             $compteGRCS->setGrcs($grcs);
             $compteGRCS->setGrandFournisseur($grandFournisseur);
-            $compteGRCSRepository->add($compteGRCS, true);
+            
             // $this->addFlash('info','Un compte GRSC a été crée au même moment dans le système.');
 
             //fin 
-            $user=$this->registerAdmGdFss($grandFournisseur, $userPasswordHasher, $entityManager);
+            $user = $this->registerAdmGdFss($grandFournisseur, $userPasswordHasher, $entityManager);
 
-            if(!$user){
-                $this->addFlash('danger','Erreur lors de la création du compte utilisateur fournisseur associé.');
-                return 0;
+            $errors = $validator->validate($user);
+            if (count($errors) > 0) {
+
+                /*
+                 * Uses a __toString method on the $errors variable which is a
+                 * ConstraintViolationList object. This gives us a nice string
+                 * for debugging.
+                 */
+                $errorsString = (string) $errors->__toString();
+                // dd($errorsString);
+                $this->addFlash('danger', $errorsString);
+                return $this->redirectToRoute('app_grand_fournisseur_index', [], Response::HTTP_SEE_OTHER);
+
+                return new Response($errorsString);
+            } else {
+
+                $password = uniqid('GDFSS-');
+                // encode the plain password
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $password
+                    )
+                );
+                $this->addFlash('success', 'Vous avez créez un utilisateur admin. grand fournisseur. Login: ' . $user->getEmail() . ' Mot de passe : ' . $password);
             }
-
+            $compteGRCSRepository->add($compteGRCS, true);
+            $entityManager->persist($user);
+            $entityManager->flush();
             $grandFournisseurRepository->add($grandFournisseur, true);
-            $this->addFlash('success','Opération réussie.');
+            $this->addFlash('success', 'Opération réussie.');
 
             return $this->redirectToRoute('app_grand_fournisseur_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -99,7 +124,7 @@ class GrandFournisseurController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $grandFournisseurRepository->add($grandFournisseur, true);
-            $this->addFlash('success','Opération réussie.');
+            $this->addFlash('success', 'Opération réussie.');
 
             return $this->redirectToRoute('app_grand_fournisseur_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -113,41 +138,25 @@ class GrandFournisseurController extends AbstractController
     #[Route('/{id}', name: 'app_grand_fournisseur_delete', methods: ['POST'])]
     public function delete(Request $request, GrandFournisseur $grandFournisseur, GrandFournisseurRepository $grandFournisseurRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$grandFournisseur->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $grandFournisseur->getId(), $request->request->get('_token'))) {
             $grandFournisseurRepository->remove($grandFournisseur, true);
-            $this->addFlash('success','Opération réussie.');
-
+            $this->addFlash('success', 'Opération réussie.');
         }
 
         return $this->redirectToRoute('app_grand_fournisseur_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    private function registerAdmGdFss(GrandFournisseur $grandFournisseur, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): User
+    private function registerAdmGdFss(GrandFournisseur $grandFournisseur, UserPasswordHasherInterface $userPasswordHasher): User
     {
         $user = new User();
         $user->setRoles(['ROLE_ADMIN_GD_FSS']);
-        $uniqueGRCS = $entityManager->getRepository(GRCS::class)->findOneBy([]);
-        if (!$uniqueGRCS) {
-            $this->addFlash('danger', 'Aucun GRCS configuré dans le système.');
-            return $this->redirectToRoute('app_accueil');
-        }
+
         $email = $grandFournisseur->getAdresse()->getEmail();
         $user->setEmail($email);
         $user->setGrandFournisseur($grandFournisseur);
-        $password=uniqid('GDFSS-');
-        // encode the plain password
-        $user->setPassword(
-            $userPasswordHasher->hashPassword(
-                $user,
-                $password
-            )
-        );
+
+
         // dd('test');
-        $entityManager->persist($user);
-        
-        $entityManager->flush();
-        // dd($test);
-        $this->addFlash('success', 'Vous avez créez un utilisateur admin. grand fournisseur. Login: '.$email.' Mot de passe : '.$password);
         return $user;
     }
 }
