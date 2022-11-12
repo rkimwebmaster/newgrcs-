@@ -51,9 +51,12 @@
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ ticket.date ? ticket.date|format_datetime('long') : '' }}</td>
-                <td>{{ ticket.comptePetitClient|upper }}
-                <td>{{ ticket.typeCarburant }}
-                {{ ticket.isGroupeElectrogene ? 'G.E' : 'Voiture' }}
+                <td>
+                {# le code ci dessous a causé un bug de id, probablement du a une incoherence de données #}
+                {# {{ ticket.comptePetitClient|upper }} #}
+                {{ ticket.comptePetitClient.id|upper }}
+                </td>
+                <td>{{ ticket.typeCarburant }}{{ ticket.isGroupeElectrogene ? 'G.E' : 'Voiture' }}
                 {{ ticket.isServi ? '<span title="Ticket servi" class="fa fa-check text-success">' : '<span title="Ticket non servi"  class="fa fa-ban text-danger">' }}
                 </td>
                 <td>{{ ticket.nomChauffeur|upper }}</td>

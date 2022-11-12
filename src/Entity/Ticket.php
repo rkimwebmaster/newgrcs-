@@ -94,6 +94,7 @@ class Ticket
         $this->totalMontant = 00;
         $this->isServi = false;
         $this->createdAt = new \DateTimeImmutable();
+        $this->isDiesel=false;
     }
 
     public function getId(): ?int
