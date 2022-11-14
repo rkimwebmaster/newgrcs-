@@ -1,0 +1,75 @@
+integrer le changement de mot de passe 
+
+verifier l'incoherence des données pouvant resulter de la suppression 
+
+revoir la page d'accueil du profile grcs ( from kennedy si possible ) 
+
+en survolant voir mon proile afficher deja le profile de l'utilisateur 
+
+signaler a kennedy que le title seront dans les cas utile remplacer par des tooltips 
+
+essayer d'upgrader le projet vers une version plus a jour de symfony 6 apres backup local biensur 
+
+
+formater les montant à l'affichage 
+
+revoir sur tous lss élements filles le titre des pages interne enlever les index objets au proit du nom etc 
+
+mettre le champ autocomplete deux ✌ 
+
+ajouter une page d'aide qui decris toutes les fonctionnalités des users de facons ecrites
+	 avec possibilité de voir le tuto en video sur youtube ()
+
+mettre en place les formulaires en colonnes (file:///D:/Templates/AdminLTE-master/pages/forms/advanced.html)
+
+les tableaux qui ont des champs booleens, mettre en place des cases a cocher non modifiables (file:///D:/Templates/AdminLTE-master/pages/tables/jsgrid.html)
+
+mettre en place des graphiques des statistisques pour les tickets tout etat confondus, 
+
+intégrer la documentation des fonctionnalités dans les modal, un bouton type info sera en permance sur la droite pour signaler de l'aide 
+
+intégrer la page d'erreur 404 et consorts 
+
+intégrer les navbar de droite pour gérer les filtres des tickets et des autres éléments à état
+
+demander quelques fiches métier pour se rassurer des design possible pour les états ( fiches ) 
+
+voir la page de detail message, mettre la date d'envoie dans le panel header 
+sur message enlever le boton delete et se rassurer du bon fonctionnement des boutons de haut droit 
+sur message verifier affichage de expediteur structure 
+
+integrer les statistiques jquery knobb pour avoir un apercu des types de ticket par etat
+
+identifier tout les champs uniques 
+
+gerer tout les champs unique 
+
+valider les champs des attributs 
+
+securiser les chemins 
+
+mettre en place la documentation utilisateur (avec videos tuto)
+
+mettre en place la documentation utilisateurs 
+
+les cases a cocher doivent avoir la case speciale bootstrap 
+
+la lettre L de litre doit avoir le style speciale genre ecrit à la main 
+
+voir comment integerer les notifications sweet alert 
+
+profile petit client route https://127.0.0.1:8001/approvisionnementpetitclient/
+
+demader proposition pour design du bouton nouveau ticket 
+
+verifier la lecture des message pour les petits clients et autres profile 
+
+sinon verifier les notifications des messages car erreur apparente 
+
+
+
+infos a demander au client 
+quelques documents utilisés dans la structure 
+la requence estimé pour l'enregistrement des données 
+
+demander a mr auguy d'arranger un rendez-vous avec eux en plus de rendre disponible une equipe de 3 personnes qui seront permannente pour des senaces de travail successif sur 5 jours 

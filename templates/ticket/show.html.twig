@@ -1,66 +1,85 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ticket{% endblock %}
+{% block title %}Ticket
+{% endblock %}
 {% block ariane %}
-{{parent() }} Ticket 
+	{{parent() }}
+	Ticket
 {% endblock %}
 {% block body %}
-    <table id="example1" class="table table-striped table-hover ">
-        <tbody>
-            <tr>
-                <th>Date Emission </th>
-                <td>{{ ticket.date ? ticket.date|format_datetime('long') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Date Retrait</th>
-                <td>
-                {% if ticket.isServi %}
-                {{ ticket.dateRetrait ? ticket.dateRetrait|format_datetime('long') : '' }}
-                {% else %}
-                <span class="badge badge-info"> Ticket pas encore servie </span>
-                {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Fournisseur </th>
-                <td>{{ ticket.comptePetitClient.compteGRCS.grandFournisseur|upper }}</td>
-            </tr>
-            <tr>
-                <th>Nom du Chauffeur</th>
-                <td>{{ ticket.nomChauffeur|upper }}</td>
-            </tr>
-            <tr>
-                <th>Numero Plaque Immatriculation</th>
-                <td>{{ ticket.numeroPlaqueImmatriculation }}</td>
-            </tr>
-            {% if  ticket.isGroupeElectrogene %}
-            <tr>
-                <th>Groupe Electrogene</th>
-                <td>{{ ticket.isGroupeElectrogene ? 'Yes' : 'No' }}</td>
-            </tr>
-            {% endif %}
-            <tr>
-                <th>Produit </th>
-                <td>
-                {{ ticket.quantite }} L {% if ticket.isDiesel %} Diesel {% else %} Essence {% endif %}
-                </td>
-            </tr>
-            {% if ticket.isCredit %}
-            <tr>
-                <th>Ticket débiteur </th>
-                <td>{{ ticket.isCredit ? 'Yes' : 'No' }}</td>
-            </tr>
-            {% endif %}
-            <tr>
-                <th>Total Montant</th>
-                <td>{{ ticket.totalMontant }}</td>
-            </tr>
-        </tbody>
-    </table>
-{# 
-    <a href="{{ path('app_ticket_index') }}">retour à la liste</a>
+	<div class="row"></div>
+	<div class="row">
+		<div class="col-6"></div>
+		<div class="col-6">
 
-    <a href="{{ path('app_ticket_edit', {'id': ticket.id}) }}"><span class="fa fa-edit" /></a>
+			<table id="example1" class="table table-striped table-hover ">
+				<tbody>
+					<tr>
+						<th>Chauffeur</th>
+						<td>{{ ticket.nomChauffeur|upper }}</td>
+					</tr>
+					<tr>
+						<th>Plaque</th>
+						<td>{{ ticket.numeroPlaqueImmatriculation }}</td>
+					</tr>
+					<tr>
+						<th>Fournisseur
+						</th>
+						<td>{{ ticket.comptePetitClient.compteGRCS.grandFournisseur|upper }}</td>
+					</tr>
+					<tr>
+						<th>Produit
+						</th>
+						<td>
+							{{ ticket.quantite }}
+							L
+							{% if ticket.isDiesel %}
+								Diesel
+							{% else %}
+								Essence
+							{% endif %}
+						</td>
+					</tr>
+					<tr>
+						<th>Expiration
+						</th>
+						<td>
+							{% if ticket.isServi %}
+								{{ ticket.dateRetrait ? ticket.dateRetrait|format_datetime('long') : '' }}
+							{% else %}
+								<span class="badge badge-info">
+									Ticket pas encore servie
+								</span>
+							{% endif %}
+						</td>
+					</tr>
+					{% if  ticket.isGroupeElectrogene %}
+						<tr>
+							<th>Groupe Electrogene</th>
+							<td>{{ ticket.isGroupeElectrogene ? 'Yes' : 'No' }}</td>
+						</tr>
+					{% endif %}
 
-    {{ include('ticket/_delete_form.html.twig') }} #}
+					{% if ticket.isCredit %}
+						<tr>
+							<th>Ticket débiteur
+							</th>
+							<td>{{ ticket.isCredit ? 'Yes' : 'No' }}</td>
+						</tr>
+					{% endif %}
+
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+
+    <div class="row">
+
+Fait à Lubumbashi le {{ ticket.date ? ticket.date|format_datetime('long') : '' }}
+               <br /><br />
+			
+         {{ ticket.utilisateur}}   
+    </div>
+
 {% endblock %}

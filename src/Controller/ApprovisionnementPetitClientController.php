@@ -53,8 +53,10 @@ class ApprovisionnementPetitClientController extends AbstractController
                 'approvisionnement_petit_clients' => $approvisionnementPetitClients,
             ]);
         }
+        $appros=$approvisionnementPetitClientRepository->findAll();
+        // dd($appros);
         return $this->render('approvisionnement_petit_client/index.html.twig', [
-            'approvisionnement_petit_clients' => $approvisionnementPetitClientRepository->findAll(),
+            'approvisionnement_petit_clients' => $appros,
         ]);
     }
 
@@ -154,8 +156,8 @@ class ApprovisionnementPetitClientController extends AbstractController
             //creation du message de notofication 
             $petitClient=$comptePetitClient->getPetitClient();
             $message=new Message();
-            $contenu="Bonjour, Nous tenons à vous informé ce jour que le compte ".$comptePetitClient." a été approvisionné. Cordialement.";
-            $message->setSujet('Compte approvionné')->setContenu($contenu);
+            $contenu="Bonjour, Nous ténons à vous informé ce jour que le compte ".$comptePetitClient." a été approvisionné. Cordialement.";
+            $message->setSujet('Compte approvisionné')->setContenu($contenu);
             $petitClient->addMessage($message);
             //fin 
             $petitClientRepository->add($petitClient, true);

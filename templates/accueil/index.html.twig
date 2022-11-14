@@ -1,19 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Accueil Ice GRCS
+	Accueil GRCS
 {% endblock %}
 {% block lesboutons %}{% endblock %}
 {% block ariane %}
 	{{parent() }}
 	Accueil
 {% endblock %}
-
+{% block cardheader %}
+	<em>Système de vente intermédiare de carburant::GRCS</em>
+{% endblock %}
 {% block body %}
 	<div class="example-wrapper">
 		<h1>GRCS</h1>
 
-		Systeme de ventes des produits
+		Système de ventes des produits
 		<ul>
 			<li>Grand fournisseur
 			</li>
@@ -24,33 +26,38 @@
 		</ul>
 	</div>
 	<div class="row">
-	{% if is_granted('ROLE_ADMIN_GRCS') %}
-		{% for compte in app.user.grcs.compteGRCS %}
-		<div
-			class="col-lg-3 col-6">
-			<!-- small box -->
-			<div class="small-box bg-primary">
-				<div class="inner">
-					<h3>
-          	<div class="row ">
-          <span class="col-lg-6 bg-warning ">{{compte.pourcentageDiesel|round(1, 'floor') }}<sup style="font-size: 20px">%</sup></span>
-          <span class="col-lg-6 bg-success">{{compte.pourcentageEssence|round(1, 'floor') }}<sup style="font-size: 20px">%</sup> </span>
-          </div>
-					</h3>
-					<div class="row">
-						<div class="col-lg-6 bg-warning ">{{compte.quantiteDiesel}} L Diesel</div>
-						<div class="col-lg-6 bg-success">{{compte.quantiteEssence}} L Essence</div>
+		{% if is_granted('ROLE_ADMIN_GRCS') %}
+			{% for compte in app.user.grcs.compteGRCS %}
+				<div
+					class="col-lg-3 col-6">
+					<!-- small box -->
+					<div class="small-box bg-primary">
+						<div class="inner">
+							<h3>
+								<div class="row ">
+									<span class="col-lg-6 bg-warning ">{{compte.pourcentageDiesel|round(1, 'floor') }}<sup style="font-size: 20px">%</sup>
+									</span>
+									<span class="col-lg-6 bg-success">{{compte.pourcentageEssence|round(1, 'floor') }}<sup style="font-size: 20px">%</sup>
+									</span>
+								</div>
+							</h3>
+							<div class="row">
+								<div class="col-lg-6 bg-warning ">{{compte.quantiteDiesel}}
+									L Diesel</div>
+								<div class="col-lg-6 bg-success">{{compte.quantiteEssence}}
+									L Essence</div>
+							</div>
+						</div>
+						<div class="icon">
+							<i class="ion ion-stats-bars"></i>
+						</div>
+						<a href="#" class="small-box-footer">{{compte}}
+							⛽
+							{# <i class="fas fa-arrow-circle-right"></i> #}
+						</a>
 					</div>
 				</div>
-				<div class="icon">
-					<i class="ion ion-stats-bars"></i>
-				</div>
-				<a href="#" class="small-box-footer">{{compte}} ⛽
-					{# <i class="fas fa-arrow-circle-right"></i> #}
-				</a>
-			</div>
-		</div>
-		{% endfor %}
-	{% endif %}
+			{% endfor %}
+		{% endif %}
 	</div>
 {% endblock %}

@@ -65,8 +65,8 @@ class ApprovisionnementGRCSController extends AbstractController
             //creation du message de notofication 
             $grcs=$compteGRCS->getGrcs();
             $message=new Message();
-            $contenu="Bonjour, Nous tenons à vous informé ce jour que votre compte ".$compteGRCS." a été approvisionné par ". $grcs. ". Cordialement.";
-            $message->setSujet('Compte approvionné')->setContenu($contenu);
+            $contenu="Bonjour, Nous ténons à vous informé ce jour que votre compte ".$compteGRCS." a été approvisionné par ". $grcs. ". Cordialement.";
+            $message->setSujet('Compte approvisionné')->setContenu($contenu);
             $grcs->addMessage($message);
             //fin 
             $approvisionnementGRCSRepository->add($approvisionnementGRC, true);

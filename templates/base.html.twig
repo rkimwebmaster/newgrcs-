@@ -4,10 +4,11 @@
 		<meta charset="utf-8">
 		<link href="{{asset('images/essence6.png')}}" rel="icon">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Plateforme profesionelle de vente intermédiare des carburant.">
 		<title>
-			{% block title %}GRCS Fuel
+			{% block title %}Portail
 			{% endblock %}
-			-GRCS Fuel
+			- ⛽ GRCS Fuel
 		</title>
 
 		<!-- Google Font: Source Sans Pro -->
@@ -52,15 +53,15 @@
 										{% if app.user %}
 											{% if app.user.grcs %}
 												{{app.user.grcs|upper}}
-												₪
+												⛽
 											{% elseif app.user.grandFournisseur %}
 												{{app.user.grandFournisseur|upper}}
 												⛽
 											{% elseif app.user.petitClient %}
 												{{app.user.petitClient|upper}}
-												֍
+												⛽
 											{% else %}
-												Control Panel ۩
+												Control Panel ⛽
 											{% endif %}
 										{% endif %}
 

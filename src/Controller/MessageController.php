@@ -46,7 +46,8 @@ class MessageController extends AbstractController
     {
         $grcs=$this->getUser()->getGRCS();
         $grcs->reinitialiserMessage();
-        $messages=$messageRepository->findBy(['grcs'=>$grcs],['createdAt'=>'DESC']);
+        $messages=$messageRepository->findBy(['destinataireGRCS'=>$grcs],['createdAt'=>'DESC']);
+        // 
         foreach($messages as $message){
             $message->setIsLu(true);
             $messageRepository->add($message, true);

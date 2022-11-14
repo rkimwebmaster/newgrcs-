@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ticket index{% endblock %}
+{% block title %}Liste des Tickets {% endblock %}
 {% block lesboutons %}
     {% if is_granted('ROLE_ADMIN_PT_CL') %}
 	<a type="button" title="Ajouter nouveau "  href="{{path('app_compte_petit_client_index')}}"class="btn btn-sm btn-info">
@@ -17,13 +17,13 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Date emission </th>
+                <th>Emission </th>
                 <th>Compte </th>
-                <th>Type de carburant  </th>
-                <th>Nom Chauffeur</th>
-                <th>Plaque Immatriculation</th>
-                <th>Date Retrait</th>
-                <th>Quantite</th>
+                <th>Carburant  </th>
+                <th>Chauffeur</th>
+                <th>Plaque</th>
+                <th>Retrait</th>
+                <th>Quantité</th>
                 {# <th>Is Credit</th>
                 <th>Total Montant</th>
                 <th>Is Servi</th> #}
@@ -33,13 +33,13 @@
         <tfoot>
             <tr>
                 <th>#</th>
-                <th>Date emission </th>
+                <th>Emission </th>
                 <th>Compte </th>
-                <th>Type de carburant  </th>
-                <th>Nom Chauffeur</th>
-                <th>Plaque Immatriculation</th>
-                <th>Date Retrait</th>
-                <th>Quantite</th>
+                <th>Carburant  </th>
+                <th>Chauffeur</th>
+                <th>Plaque</th>
+                <th>Retrait</th>
+                <th>Quantité</th>
                 {# <th>Is Credit</th>
                 <th>Total Montant</th>
                 <th>Is Servi</th> #}
@@ -50,18 +50,18 @@
         {% for ticket in tickets %}
             <tr>
                 <td>{{ loop.index }}</td>
-                <td>{{ ticket.date ? ticket.date|format_datetime('long') : '' }}</td>
+                <td>{{ ticket.date ? ticket.date|format_datetime('medium') : '' }}</td>
                 <td>
                 {# le code ci dessous a causé un bug de id, probablement du a une incoherence de données #}
-                {# {{ ticket.comptePetitClient|upper }} #}
-                {{ ticket.comptePetitClient.id|upper }}
+                {{ ticket.comptePetitClient|upper }}
+                {# {{ ticket.comptePetitClient.id|upper }} #}
                 </td>
-                <td>{{ ticket.typeCarburant }}{{ ticket.isGroupeElectrogene ? 'G.E' : 'Voiture' }}
-                {{ ticket.isServi ? '<span title="Ticket servi" class="fa fa-check text-success">' : '<span title="Ticket non servi"  class="fa fa-ban text-danger">' }}
+                <td>{{ ticket.typeCarburant }} - {#{ ticket.isGroupeElectrogene ? 'G.E' : 'Voiture' }#}
+                {{ ticket.isServi ? '<span title="Ticket servi" class="fa fa-check-circle text-success">' : '<span title="Ticket non servi"  class="fa fa-times-circle text-danger">' }}
                 </td>
                 <td>{{ ticket.nomChauffeur|upper }}</td>
                 <td>{{ ticket.numeroPlaqueImmatriculation|upper }}</td>
-                <td>{{ ticket.dateRetrait ? ticket.dateRetrait|format_datetime('long') : '' }}</td>
+                <td>{{ ticket.dateRetrait ? ticket.dateRetrait|format_datetime('medium') : '' }}</td>
                 <td>{{ ticket.quantite }} L </td>
                 {# <td>{{ ticket.isCredit ? 'Yes' : 'No' }}</td>
                 <td>{{ ticket.totalMontant }}</td>
