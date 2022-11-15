@@ -64,7 +64,7 @@ class MessageController extends AbstractController
     {
         $grandFournisseur=$this->getUser()->getGrandFournisseur();
         $grandFournisseur->reinitialiserMessage();
-        $messages=$messageRepository->findBy(['grandFournisseur'=>$grandFournisseur],['createdAt'=>'DESC']);
+        $messages=$messageRepository->findBy(['destinataireFournisseur'=>$grandFournisseur],['createdAt'=>'DESC']);
         foreach($messages as $message){
             $message->setIsLu(true);
             $messageRepository->add($message, true);
@@ -81,7 +81,7 @@ class MessageController extends AbstractController
        
         $petitClient=$this->getUser()->getPetitClient();
         $petitClient->reinitialiserMessage();
-        $messages=$messageRepository->findBy(['petitClient'=>$petitClient],['createdAt'=>'DESC']);
+        $messages=$messageRepository->findBy(['destinataireClient'=>$petitClient],['createdAt'=>'DESC']);
         foreach($messages as $message){
             $message->setIsLu(true);
             $messageRepository->add($message, true);

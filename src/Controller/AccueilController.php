@@ -16,4 +16,13 @@ class AccueilController extends AbstractController
             'controller_name' => 'AccueilController',
         ]);
     }
+
+    #[Route('/faq', name: 'app_faq')]
+    public function faq(): Response
+    {
+        // dd('quoi');
+        return $this->render('accueil/faq.html.twig', [
+            
+        ]);
+    }
 }

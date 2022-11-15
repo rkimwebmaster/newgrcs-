@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/message/petit/client')]
 class MessagePetitClientController extends AbstractController
 {
-    #[Route('/', name: 'app_message_petit_client_index', methods: ['GET'])]
+    #[Route('/', name: 'app_message_petit_client_indexold', methods: ['GET'])]
     public function index(MessagePetitClientRepository $messagePetitClientRepository): Response
     {
         $objets=$messagePetitClientRepository->findAll();

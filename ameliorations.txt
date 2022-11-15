@@ -28,8 +28,6 @@ mettre en place des graphiques des statistisques pour les tickets tout etat conf
 
 intégrer la documentation des fonctionnalités dans les modal, un bouton type info sera en permance sur la droite pour signaler de l'aide 
 
-intégrer la page d'erreur 404 et consorts 
-
 intégrer les navbar de droite pour gérer les filtres des tickets et des autres éléments à état
 
 demander quelques fiches métier pour se rassurer des design possible pour les états ( fiches ) 
